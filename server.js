@@ -26,6 +26,9 @@ const { createClient } = require('@supabase/supabase-js');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// Hostinger runs behind a reverse proxy — trust the first hop
+app.set('trust proxy', 1);
+
 // ═══════════════════════════════════════════════════════════
 //  SUPABASE CLIENT
 // ═══════════════════════════════════════════════════════════
