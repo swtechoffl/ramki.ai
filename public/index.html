@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAMKI — Ramakrishnan T.B. | SEBI Research Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#6C63FF;--accent2:#00D4FF;--accent3:#FF6B6B;--gold:#F5C842;--teal:#00E5C3;--radius:16px;--radius-sm:10px}
+[data-theme="dark"]{--bg:#0A0F1E;--bg2:#0D1635;--text:#FFF;--text2:rgba(255,255,255,.72);--text3:rgba(255,255,255,.42);--border:rgba(255,255,255,.08);--card:rgba(255,255,255,.04);--card-h:rgba(255,255,255,.08);--nav-bg:rgba(10,15,30,.88);--shadow:rgba(0,0,0,.45)}
+[data-theme="light"]{--bg:#F5F5F0;--bg2:#EAEAE4;--text:#0A0F1E;--text2:rgba(10,15,30,.72);--text3:rgba(10,15,30,.45);--border:rgba(10,15,30,.1);--card:rgba(255,255,255,.85);--card-h:#FFF;--nav-bg:rgba(245,245,240,.92);--shadow:rgba(0,0,0,.12)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+.blob{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;opacity:0;transition:opacity .5s}
+[data-theme="dark"] .blob{opacity:.14}
+.blob1{width:500px;height:500px;background:var(--accent);top:-150px;left:-150px}
+.blob2{width:400px;height:400px;background:var(--accent2);top:40%;right:-100px}
+.blob3{width:350px;height:350px;background:var(--accent3);bottom:-80px;left:25%}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:70px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .3s}
+.nav-logo{font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer}
+.nav-logo span{display:block;font-size:10px;-webkit-text-fill-color:var(--text3);color:var(--text3);font-weight:400;letter-spacing:3px;text-transform:uppercase;margin-top:-3px}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--text3);text-decoration:none;cursor:pointer;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.theme-btn{background:var(--card);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.theme-btn:hover{border-color:var(--accent)}
+.nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:8px 20px;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+.nav-login-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.nav-login-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* TICKER */
+.ticker{position:fixed;top:70px;left:0;right:0;z-index:999;background:var(--bg2);border-bottom:1px solid var(--border);padding:7px 0;overflow:hidden;transition:background .3s}
+.ticker-inner{display:flex;animation:tick 34s linear infinite;white-space:nowrap}
+.tick-item{display:inline-flex;align-items:center;gap:7px;padding:0 28px;font-size:11px;font-weight:500;color:var(--text3);border-right:1px solid var(--border)}
+.tick-item .sym{color:var(--text);font-weight:700}
+.up{color:#00E5C3}.dn{color:#FF6B6B}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* PAGE ROUTER */
+.page{display:none}.page.active{display:block}
+
+/* ═══ HERO ═══ */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;overflow:hidden;padding-top:106px}
+.hero-bg-name{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);font-size:clamp(80px,15vw,210px);font-weight:900;letter-spacing:-3px;line-height:1;color:var(--text);opacity:.035;white-space:nowrap;pointer-events:none;user-select:none;z-index:0}
+.hero-body{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:260px 1fr 290px;min-height:calc(100vh - 106px)}
+.hero-left{display:flex;flex-direction:column;justify-content:flex-end;padding:0 0 56px 52px;gap:20px}
+.sebi-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.4);border-radius:50px;padding:6px 14px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);width:fit-content}
+.sebi-pill::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-name-left{font-size:clamp(34px,3.2vw,48px);font-weight:900;line-height:1;color:var(--text);letter-spacing:-1px}
+.hero-name-left .dim{color:var(--text3)}
+.hero-role{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);font-weight:500}
+.hero-role.hi{color:var(--accent2)}
+.hero-scroll{display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-top:4px;cursor:pointer}
+.hero-scroll::before{content:'';display:block;width:1px;height:36px;background:linear-gradient(180deg,transparent,var(--text3))}
+.hero-center{position:relative;display:flex;align-items:flex-end;justify-content:center}
+.hero-photo-wrap{position:relative;width:100%;max-width:440px;height:calc(100vh - 106px);display:flex;align-items:flex-end;justify-content:center}
+.hero-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.hero-photo-placeholder{width:100%;height:100%;background:linear-gradient(170deg,rgba(108,99,255,.2) 0%,rgba(0,212,255,.12) 45%,var(--bg) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.ph-ring{width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:3px}
+.ph-inner{width:100%;height:100%;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ph-name{font-size:17px;font-weight:700;color:var(--text)}
+.ph-sub{font-size:12px;color:var(--text3)}
+.ph-hint{font-size:11px;color:var(--text3);border:1px dashed var(--border);padding:6px 14px;border-radius:8px}
+.hero-photo-fade{position:absolute;bottom:0;left:0;right:0;height:180px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
+.hero-awards{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);display:flex;gap:18px;white-space:nowrap}
+.award-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--nav-bg);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:50%;width:84px;height:84px;font-size:9px;font-weight:700;text-align:center;letter-spacing:.5px;color:var(--text2);text-transform:uppercase;line-height:1.3}
+.award-badge .aw-yr{color:var(--gold)}
+.hero-right{display:flex;flex-direction:column;justify-content:center;padding:0 20px 0 8px}
+.hero-right-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.hero-right-title{font-size:clamp(38px,3.8vw,60px);font-weight:900;line-height:1;letter-spacing:-1px;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:28px}
+.hero-right-stats{display:flex;flex-direction:column;gap:18px;margin-bottom:32px}
+.hr-stat{border-left:2px solid rgba(108,99,255,.4);padding-left:14px}
+.hr-stat-num{font-size:30px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.hr-stat-lbl{font-size:11px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.hero-cta-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:13px 26px;border-radius:50px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 0 28px rgba(108,99,255,.35);transition:all .3s;cursor:pointer;border:none;margin-bottom:10px;font-family:inherit}
+.hero-cta-primary:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(108,99,255,.55)}
+.hero-cta-sec{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);border:1px solid var(--border);padding:13px 26px;border-radius:50px;font-size:13px;font-weight:600;text-decoration:none;transition:all .3s;cursor:pointer;font-family:inherit}
+.hero-cta-sec:hover{border-color:rgba(255,255,255,.3);background:var(--card)}
+.hero-stats-bar{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);background:var(--nav-bg);backdrop-filter:blur(16px)}
+.hsb-item{padding:20px 28px;border-right:1px solid var(--border);display:flex;align-items:center;gap:14px}
+.hsb-item:last-child{border-right:none}
+.hsb-num{font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+.hsb-lbl{font-size:10px;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;line-height:1.5}
+
+/* SHARED */
+section{padding:90px 48px;position:relative;z-index:1}
+.section-inner{max-width:1240px;margin:0 auto}
+.section-tag{display:inline-flex;align-items:center;gap:10px;background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.25);border-radius:50px;padding:5px 16px;margin-bottom:18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+h2.section-title{font-weight:800;font-size:clamp(32px,3.5vw,52px);line-height:1.05;margin-bottom:14px;color:var(--text)}
+h2.section-title .grd{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-lead{font-size:16px;color:var(--text3);max-width:520px;line-height:1.7}
+.div-line{height:1px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);opacity:.25}
+
+/* ABOUT BENTO */
+.about-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:52px}
+.bc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all .3s;overflow:hidden}
+.bc:hover{background:var(--card-h);border-color:rgba(108,99,255,.3);transform:translateY(-2px)}
+.bc-bio{grid-column:span 7}.bc-sebi{grid-column:span 5}
+.bc-photo{grid-column:span 4;padding:0;min-height:300px}
+.bc-creds{grid-column:span 8}.bc-quote{grid-column:span 12}
+.bc-ai{grid-column:span 6}.bc-pub{grid-column:span 6}
+.bc p{font-size:14px;color:var(--text2);line-height:1.85;margin-bottom:14px}
+.bc p:last-child{margin-bottom:0}.bc strong{color:var(--text);font-weight:600}
+.bc-lbl{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-weight:700;display:flex;align-items:center;gap:8px}
+.bc-lbl::before{content:'';width:18px;height:2px;background:var(--accent)}
+.bc-sebi{background:linear-gradient(145deg,rgba(108,99,255,.15),rgba(0,212,255,.08));border-color:rgba(108,99,255,.35)}
+.sebi-num{font-size:26px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:10px 0 6px}
+.verified{display:inline-flex;align-items:center;gap:6px;background:rgba(0,229,195,.1);border:1px solid rgba(0,229,195,.25);border-radius:50px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--teal);margin-top:14px}
+.bc-quote{background:linear-gradient(135deg,rgba(108,99,255,.1),rgba(0,212,255,.07));border-color:rgba(108,99,255,.25)}
+.quote-txt{font-size:clamp(17px,1.8vw,24px);font-weight:700;color:var(--text);line-height:1.4;font-style:italic;max-width:780px}
+.quote-src{font-size:13px;color:var(--text3);margin-top:14px;display:flex;align-items:center;gap:12px}
+.quote-src::before{content:'';width:36px;height:1px;background:var(--accent2)}
+.bc-photo-ph{width:100%;height:100%;min-height:300px;border-radius:var(--radius);background:linear-gradient(145deg,rgba(108,99,255,.2),rgba(0,212,255,.12));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.photo-av{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#fff}
+.creds-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.cred-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;transition:all .2s}
+.cred-card:hover{border-color:rgba(108,99,255,.4)}
+.cred-yr{font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;font-weight:600}
+.cred-t{font-size:13px;color:var(--text);font-weight:600;margin-top:3px}
+.cred-s{font-size:11px;color:var(--text3);margin-top:2px}
+.bc-ai{background:linear-gradient(145deg,rgba(255,107,107,.08),rgba(245,200,66,.06));border-color:rgba(255,107,107,.2)}
+.ai-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.ai-chip{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.18);border-radius:50px;padding:4px 12px;font-size:11px;color:var(--text2)}
+.pub-list{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.pub-item{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;transition:all .2s}
+.pub-item:hover{border-color:rgba(0,212,255,.3)}
+.pub-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.pub-name{font-size:13px;color:var(--text);font-weight:600}
+.pub-type{font-size:11px;color:var(--text3);margin-top:1px}
+
+/* EXPERTISE */
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+.exp-card{background:var(--card);padding:36px 28px;position:relative;overflow:hidden;transition:all .3s;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.exp-card:nth-child(3n){border-right:none}.exp-card:nth-child(n+4){border-bottom:none}
+.exp-card:hover{background:var(--card-h)}
+.exp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:.3s;transform-origin:left}
+.exp-card:hover::before{transform:scaleX(1)}
+.exp-num{font-size:64px;font-weight:900;position:absolute;top:10px;right:18px;color:var(--text);opacity:.03;line-height:1}
+.exp-icon{width:48px;height:48px;border-radius:12px;margin-bottom:18px;background:linear-gradient(135deg,rgba(108,99,255,.18),rgba(0,212,255,.08));border:1px solid rgba(108,99,255,.25);display:flex;align-items:center;justify-content:center;font-size:22px}
+.exp-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:10px}
+.exp-desc{font-size:13px;color:var(--text3);line-height:1.7}
+.exp-tag{display:inline-flex;margin-top:14px;background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.18);border-radius:50px;padding:3px 10px;font-size:10px;color:var(--accent)}
+
+/* TIMELINE */
+.tl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:52px}
+.tl-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;position:relative;overflow:hidden;transition:all .3s}
+.tl-card:hover{background:var(--card-h);border-color:rgba(108,99,255,.3);transform:translateY(-2px)}
+.tl-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.tl-year{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+.tl-role{font-size:17px;font-weight:700;color:var(--text);margin-bottom:3px}
+.tl-org{font-size:12px;color:var(--accent2);margin-bottom:12px;font-weight:500}
+.tl-desc{font-size:13px;color:var(--text3);line-height:1.7}
+.tl-feat{grid-column:span 2;background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(0,212,255,.08));border-color:rgba(108,99,255,.35)}
+.tl-feat .tl-role{font-size:20px}
+
+/* BLOGS */
+.blogs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px}
+.blog-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s;cursor:pointer}
+.blog-card:hover{transform:translateY(-4px);border-color:rgba(108,99,255,.35);box-shadow:0 12px 40px var(--shadow)}
+.blog-card-img{height:180px;background:linear-gradient(145deg,rgba(108,99,255,.25),rgba(0,212,255,.15));display:flex;align-items:center;justify-content:center;font-size:40px;overflow:hidden}
+.blog-card-img img{width:100%;height:100%;object-fit:cover}
+.blog-card-body{padding:20px}
+.blog-cat{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+.blog-title-txt{font-size:16px;font-weight:700;color:var(--text);line-height:1.35;margin-bottom:10px}
+.blog-excerpt{font-size:13px;color:var(--text3);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.blog-meta{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.blog-date{font-size:11px;color:var(--text3)}
+.blog-views{font-size:11px;color:var(--text3)}
+.share-btns-sm{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.sbs{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;font-size:10px;font-weight:600;text-decoration:none;border:1px solid;cursor:pointer;transition:all .2s;background:transparent;font-family:inherit}
+.sbs:hover{transform:scale(1.05)}
+.sbs-li{color:#0077B5;border-color:rgba(0,119,181,.35)}.sbs-tw{color:#1DA1F2;border-color:rgba(29,161,242,.35)}
+.sbs-wa{color:#25D366;border-color:rgba(37,211,102,.35)}.sbs-tg{color:#2CA5E0;border-color:rgba(44,165,224,.35)}
+.no-blogs{text-align:center;padding:60px 20px;color:var(--text3);grid-column:span 3}
+.no-blogs .nb-icon{font-size:44px;margin-bottom:14px}
+
+/* MEDIA SECTION */
+.media-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+.media-row{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;transition:all .25s}
+.media-row:hover{border-color:rgba(0,212,255,.35);background:var(--card-h)}
+.media-icon{width:42px;height:42px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.media-type-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);font-weight:700;margin-bottom:3px}
+.media-name{font-size:14px;color:var(--text);font-weight:600;line-height:1.3}
+.media-src{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* AFFILIATIONS */
+.affil-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:52px}
+.affil-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.affil-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,99,255,.07),rgba(0,212,255,.04));opacity:0;transition:.3s}
+.affil-card:hover::after{opacity:1}
+.affil-card:hover{transform:translateY(-3px);border-color:rgba(108,99,255,.35)}
+.affil-logo{font-size:32px;margin-bottom:12px;display:block}
+.affil-name{font-size:14px;color:var(--text);font-weight:600;position:relative;z-index:1}
+.affil-role{font-size:11px;color:var(--text3);margin-top:5px;line-height:1.5;position:relative;z-index:1}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:52px;align-items:start}
+.cinfo-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:22px}
+.cinfo-icon{width:44px;height:44px;flex-shrink:0;border-radius:10px;background:linear-gradient(135deg,rgba(108,99,255,.18),rgba(0,212,255,.08));border:1px solid rgba(108,99,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px}
+.cinfo-lbl{font-size:10px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;font-weight:600}
+.cinfo-val{font-size:14px;color:var(--text);margin-top:2px}
+.contact-form{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:36px}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.fg label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-weight:600}
+.fg input,.fg textarea,.fg select{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:all .2s;resize:none;-webkit-appearance:none}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,99,255,.12)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--text3)}
+.fg select option{background:var(--bg2);color:var(--text)}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:14px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;transition:all .3s;font-family:inherit}
+.btn-submit:hover{transform:translateY(-2px)}
+.disclaimer-box{background:rgba(255,107,107,.05);border:1px solid rgba(255,107,107,.12);border-radius:10px;padding:14px 18px;margin-top:28px;font-size:11px;color:var(--text3);line-height:1.7}
+.disclaimer-box strong{color:rgba(255,107,107,.8)}
+
+/* FOOTER */
+footer{background:var(--nav-bg);border-top:1px solid var(--border);padding:44px 48px;z-index:1;position:relative}
+.footer-inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:36px}
+.footer-brand{font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-brand span{display:block;font-size:11px;color:var(--text3);-webkit-text-fill-color:var(--text3);font-weight:400;letter-spacing:2px;margin-top:3px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:13px;color:var(--text3);text-decoration:none;cursor:pointer;transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-bottom{max-width:1240px;margin:28px auto 0;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-copy,.footer-sebi{font-size:11px;color:var(--text3)}
+
+/* BLOG LIST PAGE */
+.blog-page-wrap{padding-top:106px;min-height:100vh;position:relative;z-index:1}
+.blog-hero-section{padding:56px 48px 36px;background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(0,212,255,.04));border-bottom:1px solid var(--border)}
+.blog-hero-inner{max-width:1240px;margin:0 auto}
+.blog-search-row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.blog-search-inp{flex:1;min-width:220px;background:var(--card);border:1px solid var(--border);border-radius:50px;padding:10px 18px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.blog-search-inp:focus{border-color:var(--accent)}
+.blog-search-inp::placeholder{color:var(--text3)}
+.filter-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:9px 16px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.filter-btn.active,.filter-btn:hover{background:rgba(108,99,255,.15);border-color:rgba(108,99,255,.4);color:var(--accent)}
+.blog-list-inner{padding:36px 48px 80px;max-width:1240px;margin:0 auto}
+.blog-list-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+/* BLOG DETAIL */
+.blog-detail-wrap{padding:80px 48px;max-width:800px;margin:0 auto}
+.back-btn{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-size:13px;cursor:pointer;margin-bottom:24px;background:none;border:none;font-family:inherit;padding:0}
+.back-btn:hover{text-decoration:underline}
+.detail-cat{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px}
+.detail-title{font-size:clamp(26px,3.5vw,42px);font-weight:800;line-height:1.2;color:var(--text);margin-bottom:16px}
+.detail-meta{display:flex;align-items:center;gap:16px;color:var(--text3);font-size:13px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.detail-cover{width:100%;max-height:420px;object-fit:cover;border-radius:var(--radius);margin:28px 0;display:none}
+.detail-body{font-size:16px;color:var(--text2);line-height:1.85;margin-top:28px}
+.detail-body h2{font-size:24px;font-weight:700;color:var(--text);margin:28px 0 12px}
+.detail-body h3{font-size:20px;font-weight:700;color:var(--text);margin:22px 0 10px}
+.detail-body p{margin-bottom:18px}
+.detail-body ul{padding-left:24px;margin:12px 0}
+.detail-body li{margin-bottom:6px}
+.detail-body blockquote{border-left:3px solid var(--accent);padding-left:16px;color:var(--text2);font-style:italic;margin:16px 0}
+.share-section{margin-top:40px;padding-top:28px;border-top:1px solid var(--border)}
+.share-section h4{font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px}
+.share-btns-lg{display:flex;gap:9px;flex-wrap:wrap}
+.sbl{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:50px;font-size:12px;font-weight:700;text-decoration:none;border:1px solid;cursor:pointer;transition:all .2s;background:transparent;font-family:inherit}
+.sbl:hover{transform:scale(1.04)}
+.sbl-li{color:#0077B5;border-color:rgba(0,119,181,.4)}.sbl-tw{color:#1DA1F2;border-color:rgba(29,161,242,.4)}
+.sbl-md{color:#00ab6c;border-color:rgba(0,171,108,.4)}.sbl-wa{color:#25D366;border-color:rgba(37,211,102,.4)}
+.sbl-tg{color:#2CA5E0;border-color:rgba(44,165,224,.4)}.sbl-fb{color:#1877F2;border-color:rgba(24,119,242,.4)}
+.sbl-copy{color:var(--text);border-color:var(--border)}
+
+/* LOGIN */
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:1}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:44px;width:100%;max-width:420px;backdrop-filter:blur(20px)}
+.login-logo{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:4px}
+.login-sub{text-align:center;font-size:13px;color:var(--text3);margin-bottom:32px}
+.err-box{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.25);color:rgba(255,107,107,.9);border-radius:10px;padding:12px;font-size:13px;margin-bottom:16px;display:none}
+.err-box.show{display:block}
+
+/* DASHBOARD */
+.dash-wrap{padding-top:106px;min-height:100vh;position:relative;z-index:1}
+.dash-header{padding:28px 48px 0;max-width:1400px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.dash-title{font-size:24px;font-weight:800;color:var(--text)}
+.dash-subtitle{font-size:13px;color:var(--text3);margin-top:2px}
+.dash-header-btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn-new-post{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:10px 22px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:inherit;transition:opacity .2s}
+.btn-new-post:hover{opacity:.85}
+.btn-logout{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2);color:rgba(255,107,107,.9);padding:9px 18px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-logout:hover{background:rgba(255,107,107,.2)}
+.dash-body{padding:24px 48px 60px;max-width:1400px;margin:0 auto}
+.dash-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:28px}
+.dash-tab{padding:12px 22px;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.dash-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.dash-tab:hover{color:var(--text)}
+.dash-panel{display:none}.dash-panel.active{display:block}
+
+/* Analytics */
+.ana-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.ana-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:border-color .2s}
+.ana-card:hover{border-color:rgba(108,99,255,.3)}
+.ana-lbl{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.ana-val{font-size:36px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.ana-sub{font-size:12px;color:var(--text3);margin-top:4px}
+.chart-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.chart-lbl{font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px}
+.mini-chart{display:flex;align-items:flex-end;gap:5px;height:80px}
+.mini-bar{flex:1;background:linear-gradient(180deg,var(--accent),rgba(108,99,255,.3));border-radius:3px 3px 0 0;min-width:6px;cursor:pointer;transition:opacity .2s;position:relative}
+.mini-bar:hover{opacity:.75}
+.mini-bar::after{content:attr(data-tip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:10px;white-space:nowrap;pointer-events:none;opacity:0;transition:.2s;margin-bottom:4px}
+.mini-bar:hover::after{opacity:1}
+.chart-xlbls{display:flex;gap:5px;margin-top:6px}
+.chart-xl{flex:1;text-align:center;font-size:9px;color:var(--text3);overflow:hidden}
+
+/* Blog table */
+.tbl-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.tbl-title{font-size:16px;font-weight:700;color:var(--text)}
+.blog-tbl{width:100%;border-collapse:collapse}
+.blog-tbl th{text-align:left;padding:11px 14px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border)}
+.blog-tbl td{padding:13px 14px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border);vertical-align:middle}
+.blog-tbl tr:hover td{background:var(--card)}
+.status-badge{display:inline-flex;padding:3px 9px;border-radius:50px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.st-pub{background:rgba(0,229,195,.1);border:1px solid rgba(0,229,195,.25);color:var(--teal)}
+.st-dr{background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);color:var(--gold)}
+.action-row{display:flex;gap:7px}
+.act-btn{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid;transition:all .2s;font-family:inherit;background:transparent}
+.act-edit{color:var(--accent);border-color:rgba(108,99,255,.3)}.act-edit:hover{background:rgba(108,99,255,.12)}
+.act-del{color:var(--accent3);border-color:rgba(255,107,107,.3)}.act-del:hover{background:rgba(255,107,107,.12)}
+.act-pub{color:var(--teal);border-color:rgba(0,229,195,.3)}.act-pub:hover{background:rgba(0,229,195,.1)}
+.act-unp{color:var(--gold);border-color:rgba(245,200,66,.3)}.act-unp:hover{background:rgba(245,200,66,.1)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:36px;width:100%;max-width:780px;margin:auto;position:relative}
+.modal-title-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.modal-title{font-size:20px;font-weight:800;color:var(--text)}
+.modal-close{background:var(--card);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal-close:hover{border-color:var(--accent3);color:var(--accent3)}
+
+/* Editor */
+.editor-toolbar{display:flex;gap:5px;flex-wrap:wrap;padding:9px 10px;background:var(--bg);border:1px solid var(--border);border-radius:10px 10px 0 0;border-bottom:none}
+.tb-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:4px 9px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.tb-btn:hover{border-color:var(--accent);color:var(--accent)}
+.editor-area{width:100%;min-height:260px;background:var(--bg);border:1px solid var(--border);border-radius:0 0 10px 10px;padding:14px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;line-height:1.7;resize:vertical;outline:none;transition:border-color .2s}
+.editor-area:focus{border-color:var(--accent)}
+
+/* Photo upload zone */
+.photo-upload-zone{border:2px dashed var(--border);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.photo-upload-zone:hover,.photo-upload-zone.drag{border-color:var(--accent);background:rgba(108,99,255,.06)}
+.photo-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
+.puz-icon{font-size:28px;margin-bottom:8px}
+.puz-text{font-size:13px;color:var(--text3)}
+.puz-text strong{color:var(--accent)}
+.photo-preview{width:100%;max-height:220px;object-fit:cover;border-radius:10px;margin-top:12px;display:none}
+.photo-remove-btn{display:none;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);color:var(--accent3);padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;font-family:inherit}
+
+/* Hero photo section */
+.hero-photo-mgr{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:24px}
+.hero-photo-current{width:100%;max-height:280px;object-fit:cover;border-radius:10px;margin-bottom:14px;display:none}
+
+/* Settings */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:800px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:13px 18px;font-size:13px;font-weight:600;color:var(--text);z-index:3000;transform:translateY(80px);opacity:0;transition:all .3s;box-shadow:0 8px 32px var(--shadow);max-width:320px;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.toast.success{border-color:rgba(0,229,195,.35);color:var(--teal)}
+.toast.error{border-color:rgba(255,107,107,.35);color:var(--accent3)}
+.toast.info{border-color:rgba(0,212,255,.35);color:var(--accent2)}
+
+/* Spinner */
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero-body{grid-template-columns:200px 1fr 260px}
+  .hero-left{padding-left:28px}.hero-right{padding-right:16px;padding-left:8px}
+  .hero-stats-bar{grid-template-columns:repeat(2,1fr)}.hsb-item:nth-child(2){border-right:none}
+  .bc-bio,.bc-sebi{grid-column:span 6}.bc-photo,.bc-creds{grid-column:span 12}
+  .exp-grid{grid-template-columns:repeat(2,1fr)}
+  .exp-card:nth-child(3n){border-right:1px solid var(--border)}.exp-card:nth-child(2n){border-right:none}
+  .affil-grid,.ana-grid{grid-template-columns:repeat(2,1fr)}
+  .blogs-grid,.blog-list-grid{grid-template-columns:repeat(2,1fr)}
+  .media-list{grid-template-columns:repeat(2,1fr)}
+  .settings-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  /* Nav */
+  nav{padding:0 16px;height:60px}.nav-links{display:none}
+  .nav-logo{font-size:18px}
+  /* Ticker */
+  .ticker{top:60px}.tick-item{padding:0 16px;font-size:10px}
+  /* Hero */
+  .hero{padding-top:96px}
+  .hero-bg-name{font-size:22vw}
+  .hero-body{grid-template-columns:1fr;min-height:unset}
+  .hero-left{order:2;padding:12px 16px 0;flex-direction:row;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;text-align:center}
+  .hero-name-left{font-size:22px;text-align:center}.hero-scroll{display:none}
+  .sebi-pill{font-size:9px}
+  .hero-center{order:1}.hero-photo-wrap{height:80vw;max-width:100%;max-height:440px}
+  .hero-photo-wrap img,.hero-photo-placeholder{border-radius:0}
+  .hero-awards{gap:8px;bottom:10px}.award-badge{width:60px;height:60px;font-size:7.5px}
+  .hero-right{order:3;padding:20px 16px;align-items:center;text-align:center;width:100%}
+  .hero-right-label{text-align:center}
+  .hero-right-title{font-size:28px;text-align:center}
+  .hero-right-stats{align-items:flex-start;width:100%;max-width:280px}
+  .hero-cta-primary,.hero-cta-sec{width:100%;max-width:300px;justify-content:center}
+  /* Stats bar */
+  .hero-stats-bar{grid-template-columns:repeat(2,1fr)}
+  .hsb-item{padding:14px 16px}.hsb-item:nth-child(2){border-right:none}
+  .hsb-num{font-size:18px}.hsb-lbl{font-size:9px}
+  /* Sections */
+  section{padding:52px 16px}
+  /* About */
+  .about-bento{grid-template-columns:1fr;gap:10px;margin-top:32px}
+  .bc-bio,.bc-sebi,.bc-quote,.bc-photo,.bc-creds,.bc-ai,.bc-pub,.tl-feat{grid-column:span 1}
+  .bc-photo{min-height:260px}
+  .bc-photo img{max-height:300px}
+  .creds-mini{grid-template-columns:1fr 1fr}
+  /* Expertise */
+  .exp-grid{grid-template-columns:1fr}.exp-card{border-right:none!important;border-bottom:1px solid var(--border)!important}
+  /* Timeline */
+  .tl-grid{grid-template-columns:1fr}
+  /* Blogs */
+  .blogs-grid,.blog-list-grid{grid-template-columns:1fr}
+  .blog-card-img{height:190px}
+  .no-blogs{grid-column:span 1}
+  /* Media */
+  .media-list{grid-template-columns:1fr}
+  /* Affiliations */
+  .affil-grid{grid-template-columns:repeat(2,1fr)}
+  /* Contact */
+  .contact-grid{grid-template-columns:1fr;gap:32px}
+  .contact-form{padding:24px 16px}
+  .fg2{grid-template-columns:1fr}
+  /* Blog list/detail */
+  .blog-page-wrap{padding-top:96px}
+  .blog-hero-section{padding:36px 16px 24px}
+  .blog-search-row{gap:7px}
+  .filter-btn{padding:7px 12px;font-size:11px}
+  .blog-list-inner{padding:24px 16px 60px}
+  .blog-detail-wrap{padding:60px 16px 40px}
+  .share-btns-lg{gap:6px}.sbl{padding:7px 12px;font-size:11px}
+  /* Dashboard */
+  .dash-wrap{padding-top:96px}
+  .dash-header{padding:20px 16px 0}.dash-body{padding:16px 16px 48px}
+  .dash-tabs{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .dash-tabs::-webkit-scrollbar{display:none}
+  .dash-tab{padding:10px 16px;font-size:12px;flex-shrink:0}
+  .ana-grid{grid-template-columns:1fr 1fr}
+  .blog-tbl{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .action-row{flex-direction:column;gap:4px}
+  .act-btn{text-align:center}
+  .settings-grid{grid-template-columns:1fr}
+  /* Footer */
+  footer{padding:32px 16px}.footer-inner{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  /* Modal */
+  .modal-box{padding:20px;border-radius:16px;margin:8px}
+  .modal-overlay{padding:8px}
+  .editor-toolbar{gap:4px}
+  .tb-btn{padding:3px 7px;font-size:11px}
+  .hero-photo-mgr{padding:20px 16px}
+}
+@media(max-width:480px){
+  nav{padding:0 12px;height:56px}
+  .ticker{top:56px}.hero{padding-top:90px}
+  .blog-page-wrap,.dash-wrap{padding-top:90px}
+  .hero-photo-wrap{height:88vw;max-height:380px}
+  .hero-awards{display:none}
+  .hero-right-title{font-size:24px}
+  .hr-stat-num{font-size:24px}
+  .hero-stats-bar{grid-template-columns:1fr 1fr}
+  .hsb-item{padding:12px}
+  .affil-grid{grid-template-columns:1fr 1fr}
+  .creds-mini{grid-template-columns:1fr}
+  .ana-grid{grid-template-columns:1fr 1fr}
+  .modal-box{padding:16px;margin:4px}
+  footer{padding:24px 12px}
+  .sebi-num{font-size:20px}
+  .about-bento{margin-top:24px}
+  .bc{padding:20px}
+  .blog-card-img{height:160px}
+}
+</style>
+</head>
+<body>
+<div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div>
+<div class="toast" id="toast"></div>
+
+<!-- BLOG EDITOR MODAL -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal-box">
+    <div class="modal-title-row">
+      <span class="modal-title" id="modalTitle">New Blog Post</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <input type="hidden" id="editBlogId">
+    <div class="fg2" style="margin-bottom:14px">
+      <div class="fg"><label>Title *</label><input type="text" id="blogTitle" placeholder="Enter blog title"></div>
+      <div class="fg"><label>Category</label>
+        <select id="blogCategory">
+          <option>Market Analysis</option><option>Equity Research</option><option>Commodities</option>
+          <option>Portfolio Strategy</option><option>AI & Finance</option><option>Economy</option><option>Investor Education</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg" style="margin-bottom:14px"><label>Excerpt / Summary</label><textarea id="blogExcerpt" rows="2" placeholder="Short description shown on blog cards"></textarea></div>
+
+    <!-- Cover Photo -->
+    <div class="fg" style="margin-bottom:14px">
+      <label>Cover Photo</label>
+      <div class="photo-upload-zone" id="coverPhotoZone">
+        <input type="file" id="coverPhotoInput" accept="image/*" onchange="previewCoverPhoto(this)">
+        <div class="puz-icon">🖼️</div>
+        <div class="puz-text">Drag & drop or <strong>click to upload</strong> a cover photo<br><span style="font-size:11px">JPG, PNG, WebP — max 8MB</span></div>
+        <img class="photo-preview" id="coverPhotoPreview" alt="Cover preview">
+      </div>
+      <button class="photo-remove-btn" id="removeCoverBtn" onclick="removeCoverPhoto()">✕ Remove Photo</button>
+      <input type="hidden" id="removePhotoFlag" value="false">
+    </div>
+
+    <div class="fg" style="margin-bottom:8px"><label>Content (Markdown supported)</label></div>
+    <div class="editor-toolbar">
+      <button class="tb-btn" onclick="ins('**','**')"><b>B</b></button>
+      <button class="tb-btn" onclick="ins('*','*')"><i>I</i></button>
+      <button class="tb-btn" onclick="ins('\n## ','')">H2</button>
+      <button class="tb-btn" onclick="ins('\n### ','')">H3</button>
+      <button class="tb-btn" onclick="ins('\n- ','')">• List</button>
+      <button class="tb-btn" onclick="ins('\n> ','')">❝ Quote</button>
+      <button class="tb-btn" onclick="ins('[Link](',')')">🔗 Link</button>
+      <button class="tb-btn" onclick="insertImageInEditor()">📷 Image URL</button>
+    </div>
+    <textarea class="editor-area" id="blogContent" placeholder="Write your blog post here...
+
+## Section Heading
+Your content...
+
+- Bullet point
+- Another point"></textarea>
+    <div class="fg2" style="margin-top:14px">
+      <div class="fg"><label>Cover Emoji (fallback)</label><input type="text" id="blogEmoji" placeholder="📊"></div>
+      <div class="fg"><label>Tags (comma separated)</label><input type="text" id="blogTags" placeholder="NIFTY, Gold, Budget"></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:20px;justify-content:flex-end;flex-wrap:wrap">
+      <button style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 22px;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit" onclick="saveBlog('draft')">💾 Save Draft</button>
+      <button style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:10px 22px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" onclick="saveBlog('published')">🚀 Publish</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-box" style="max-width:440px">
+    <div class="modal-title-row">
+      <span class="modal-title">Delete Blog Post?</span>
+      <button class="modal-close" onclick="closeDeleteModal()">✕</button>
+    </div>
+    <p style="color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:24px">This action cannot be undone. The blog post and its cover photo will be permanently deleted.</p>
+    <div style="display:flex;gap:12px;justify-content:flex-end">
+      <button style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit" onclick="closeDeleteModal()">Cancel</button>
+      <button id="confirmDeleteBtn" style="background:rgba(255,107,107,.15);border:1px solid rgba(255,107,107,.4);color:var(--accent3);padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">RAMKI<span>Research Analyst</span></div>
+  <ul class="nav-links">
+    <li><a onclick="goHome('about')">About</a></li>
+    <li><a onclick="goHome('expertise')">Expertise</a></li>
+    <li><a onclick="goHome('journey')">Journey</a></li>
+    <li><a onclick="showPage('blog-list')">Blog</a></li>
+    <li><a onclick="goHome('media')">Media</a></li>
+    <li><a onclick="goHome('affiliations')">Affiliations</a></li>
+    <li><a onclick="goHome('contact')">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    <button class="nav-login-btn" id="navLoginBtn" onclick="showPage('login')">Login</button>
+    <a class="nav-cta" onclick="goHome('contact')" style="cursor:pointer">Get Research →</a>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-inner">
+  <span class="tick-item"><span class="sym">NIFTY 50</span><span class="up"> ▲ 22,450.30 (+0.42%)</span></span>
+  <span class="tick-item"><span class="sym">SENSEX</span><span class="up"> ▲ 74,010.12 (+0.38%)</span></span>
+  <span class="tick-item"><span class="sym">BANKNIFTY</span><span class="dn"> ▼ 48,200.45 (-0.21%)</span></span>
+  <span class="tick-item"><span class="sym">GOLD MCX</span><span class="up"> ▲ ₹74,350 (+0.61%)</span></span>
+  <span class="tick-item"><span class="sym">SILVER</span><span class="up"> ▲ ₹87,200 (+0.44%)</span></span>
+  <span class="tick-item"><span class="sym">CRUDE OIL</span><span class="dn"> ▼ ₹6,220 (-1.12%)</span></span>
+  <span class="tick-item"><span class="sym">USD/INR</span><span class="up"> ▲ 83.42</span></span>
+  <span class="tick-item"><span class="sym">RELIANCE</span><span class="up"> ▲ 2,870.50</span></span>
+  <span class="tick-item"><span class="sym">TCS</span><span class="dn"> ▼ 3,540.20</span></span>
+  <span class="tick-item"><span class="sym">NIFTY 50</span><span class="up"> ▲ 22,450.30 (+0.42%)</span></span>
+  <span class="tick-item"><span class="sym">SENSEX</span><span class="up"> ▲ 74,010.12 (+0.38%)</span></span>
+  <span class="tick-item"><span class="sym">BANKNIFTY</span><span class="dn"> ▼ 48,200.45 (-0.21%)</span></span>
+  <span class="tick-item"><span class="sym">GOLD MCX</span><span class="up"> ▲ ₹74,350 (+0.61%)</span></span>
+  <span class="tick-item"><span class="sym">SILVER</span><span class="up"> ▲ ₹87,200 (+0.44%)</span></span>
+  <span class="tick-item"><span class="sym">CRUDE OIL</span><span class="dn"> ▼ ₹6,220 (-1.12%)</span></span>
+  <span class="tick-item"><span class="sym">USD/INR</span><span class="up"> ▲ 83.42</span></span>
+</div></div>
+
+<!-- ═══════════════ HOME PAGE ═══════════════ -->
+<div class="page active" id="page-home">
+
+<div class="hero" id="heroSection">
+  <div class="hero-bg-name">RAMKI</div>
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="sebi-pill">🟢 SEBI · INH000010496</div>
+      <div class="hero-name-left">RAMKI<br><span class="dim">Ramakrishnan</span><br><span class="dim">T.B.</span></div>
+      <div class="hero-role">Research Analyst</div>
+      <div class="hero-role hi">MD  · Sharewealth</div>
+      <div class="hero-scroll" onclick="goHome('about')">Scroll Down</div>
+    </div>
+    <div class="hero-center">
+      <div class="hero-photo-wrap" id="heroPhotoWrap">
+        <div class="hero-photo-placeholder" id="heroPhotoPlaceholder">
+          <div class="ph-ring"><div class="ph-inner">R</div></div>
+          <div class="ph-name">Ramakrishnan T.B.</div>
+          <div class="ph-sub">MD  · Sharewealth Securities</div>
+        </div>
+        <img id="heroPhotoImg" src="" alt="Ramakrishnan T.B." style="display:none;width:100%;height:100%;object-fit:cover;object-position:top center">
+        <div class="hero-photo-fade"></div>
+        <div class="hero-awards">
+          <div class="award-badge">NSE·SEBI<br><span class="aw-yr">Registered</span></div>
+          <div class="award-badge">32+<br>Years<br><span class="aw-yr">Experience</span></div>
+          <div class="award-badge">220+<br>Branches<br><span class="aw-yr">Nationwide</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-label">Capital Markets Expert</div>
+      <div class="hero-right-title">Kerala's<br>Trusted<br>Analyst</div>
+      <div class="hero-right-stats">
+        <div class="hr-stat"><div class="hr-stat-num">32+</div><div class="hr-stat-lbl">Years in Markets</div></div>
+        <div class="hr-stat"><div class="hr-stat-num">500+</div><div class="hr-stat-lbl">Awareness Programs</div></div>
+        <div class="hr-stat"><div class="hr-stat-num">220+</div><div class="hr-stat-lbl">Branches Across India</div></div>
+      </div>
+      <button class="hero-cta-primary" onclick="goHome('contact')">Request Research →</button>
+      <button class="hero-cta-sec" onclick="goHome('about')">View Profile</button>
+    </div>
+  </div>
+  <div class="hero-stats-bar">
+    <div class="hsb-item"><div><div class="hsb-num">SEBI</div><div class="hsb-lbl">Registered Analyst<br>INH000010496</div></div></div>
+    <div class="hsb-item"><div><div class="hsb-num">NISM</div><div class="hsb-lbl">PG Portfolio<br>Management</div></div></div>
+    <div class="hsb-item"><div><div class="hsb-num">NSE·BSE</div><div class="hsb-lbl">Exchange<br>Member</div></div></div>
+    <div class="hsb-item"><div><div class="hsb-num">CDSL</div><div class="hsb-lbl">Depository<br>Participant</div></div></div>
+  </div>
+</div>
+
+<div class="div-line"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-tag">About</div>
+    <h2 class="section-title">Kerala's Most Trusted<br><span class="grd">Market Voice</span></h2>
+    <p class="section-lead">SEBI-registered research analyst, CEO of a 220+ branch brokerage, and passionate investor educator.</p>
+    <div class="about-bento">
+      <div class="bc bc-bio">
+        <div class="bc-lbl">Biography</div>
+        <p><strong>Ramakrishnan T.B.</strong>, widely known as <strong>Ramki</strong>, is one of Kerala's foremost financial market professionals — SEBI-registered Research Analyst (Reg. No. INH000010496) with a Post Graduate Program in Portfolio Management from NISM.</p>
+        <p>As <strong>MD  of Sharewealth Securities Limited</strong>, he leads one of South India's premier brokerage groups from Thrissur — 220+ branches nationwide, NSE, BSE, MCX memberships and CDSL DP status.</p>
+        <p>Treasurer and Governing Council Member at <strong>Cochin Stock Exchange</strong> (1998–2000) and <strong>Kerala Regional Head of Sharekhan</strong> (2002–2006).</p>
+      </div>
+      <div class="bc bc-sebi">
+        <div class="bc-lbl">SEBI Registration</div>
+        <div style="font-size:12px;color:var(--text3)">Research Analyst</div>
+        <div class="sebi-num">INH000010496</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7">Registered under SEBI (Research Analysts) Regulations, 2014. All research governed by SEBI's independence and accuracy framework.</div>
+        <div class="verified">✓ SEBI Verified · Active</div>
+      </div>
+      <div class="bc bc-photo" style="padding:0;overflow:hidden;position:relative">
+        <img id="aboutPhotoImg" src="" alt="Ramakrishnan T.B." style="display:none;width:100%;height:100%;min-height:300px;object-fit:cover;object-position:top center">
+        <div class="bc-photo-ph" id="aboutPhotoPlaceholder">
+          <div class="photo-av">R</div>
+          <div style="text-align:center">
+            <div style="font-size:16px;font-weight:700;color:var(--text)">RAMKI</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:3px">Ramakrishnan T.B.</div>
+          </div>
+        </div>
+      </div>
+      <div class="bc bc-creds">
+        <div class="bc-lbl">Credentials & Milestones</div>
+        <div class="creds-mini">
+          <div class="cred-card"><div class="cred-yr">Since 1991</div><div class="cred-t">Capital Market Career</div><div class="cred-s">32+ years</div></div>
+          <div class="cred-card"><div class="cred-yr">1998–2000</div><div class="cred-t">CSE Governing Board</div><div class="cred-s">Treasurer, Cochin SE</div></div>
+          <div class="cred-card"><div class="cred-yr">2002–2006</div><div class="cred-t">Regional Head Kerala</div><div class="cred-s">Sharekhan Ltd.</div></div>
+          <div class="cred-card"><div class="cred-yr">NISM</div><div class="cred-t">PG Portfolio Mgmt</div><div class="cred-s">National Institute</div></div>
+          <div class="cred-card"><div class="cred-yr">Present</div><div class="cred-t">MD  Sharewealth</div><div class="cred-s">220+ branches</div></div>
+          <div class="cred-card"><div class="cred-yr">Present</div><div class="cred-t">Moat Financial Services</div><div class="cred-s">Executive Team</div></div>
+        </div>
+      </div>
+      <div class="bc bc-quote">
+        <div class="quote-txt">"Markets are not just charts and numbers — they are a mirror of human behaviour, policy decisions, and macroeconomic forces. My role is to help investors read that mirror clearly."</div>
+        <div class="quote-src">Ramakrishnan T.B. (RAMKI) · SEBI Research Analyst</div>
+      </div>
+      <div class="bc bc-ai">
+        <div class="bc-lbl">🤖 AI & Markets Initiative</div>
+        <p>Since <strong>May 2023</strong>, Ramki has led investor awareness programs across Kerala on <strong>"AI and its impact on the stock market"</strong>.</p>
+        <div class="ai-chips">
+          <span class="ai-chip">Algorithmic Trading</span><span class="ai-chip">AI Analytics</span><span class="ai-chip">Robo Advisory</span><span class="ai-chip">Sentiment Analysis</span><span class="ai-chip">Quant Models</span>
+        </div>
+      </div>
+      <div class="bc bc-pub">
+        <div class="bc-lbl">Publications & Media</div>
+        <div class="pub-list">
+          <div class="pub-item"><div class="pub-icon">📰</div><div><div class="pub-name">Sampadyam</div><div class="pub-type">Malayala Manorama · Column</div></div></div>
+          <div class="pub-item"><div class="pub-icon">📗</div><div><div class="pub-name">Dhanam Magazine</div><div class="pub-type">Business Magazine · Contributor</div></div></div>
+          <div class="pub-item"><div class="pub-icon">📘</div><div><div class="pub-name">Business Deepika</div><div class="pub-type">Business Newspaper</div></div></div>
+          <div class="pub-item"><div class="pub-icon">🎙️</div><div><div class="pub-name">Daily Market Podcast</div><div class="pub-type">Sharewealth · Budget Roundups</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- EXPERTISE -->
+<section id="expertise" style="background:linear-gradient(180deg,var(--bg),var(--bg2),var(--bg))">
+  <div class="section-inner">
+    <div class="section-tag">Expertise</div>
+    <h2 class="section-title">Where Deep Knowledge<br><span class="grd">Meets Real Markets</span></h2>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="exp-num">01</div><div class="exp-icon">📊</div><div class="exp-title">Equity Research</div><div class="exp-desc">Fundamental and technical analysis of NSE/BSE-listed equities. Sectoral deep-dives backed by 32+ years of market intuition.</div><span class="exp-tag">NSE · BSE · F&O</span></div>
+      <div class="exp-card"><div class="exp-num">02</div><div class="exp-icon">🥇</div><div class="exp-title">Commodity Markets</div><div class="exp-desc">Gold, silver, crude oil and agri commodities. MCX-based research with global macro linkages and hedging frameworks.</div><span class="exp-tag">MCX · NCDEX</span></div>
+      <div class="exp-card"><div class="exp-num">03</div><div class="exp-icon">💼</div><div class="exp-title">Portfolio Management</div><div class="exp-desc">Asset allocation, risk-adjusted return planning, and long-term wealth strategy. NISM PG-qualified expertise.</div><span class="exp-tag">NISM Certified</span></div>
+      <div class="exp-card"><div class="exp-num">04</div><div class="exp-icon">🤖</div><div class="exp-title">AI in Finance</div><div class="exp-desc">Dedicated awareness series since May 2023 on AI's impact — algorithmic trading, sentiment tools, and quant models.</div><span class="exp-tag">Ongoing · 2023+</span></div>
+      <div class="exp-card"><div class="exp-num">05</div><div class="exp-icon">📢</div><div class="exp-title">Investor Education</div><div class="exp-desc">500+ programs across Kerala with NSE, BSE, SEBI, NSDL, and CDSL. Making markets accessible to all investors.</div><span class="exp-tag">NSE · SEBI · CDSL</span></div>
+      <div class="exp-card"><div class="exp-num">06</div><div class="exp-icon">🗞️</div><div class="exp-title">Financial Journalism</div><div class="exp-desc">Columns in Sampadyam, Dhanam, Business Deepika. Frequent TV panellist on markets and investment trends.</div><span class="exp-tag">Print · TV · Podcast</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- JOURNEY -->
+<section id="journey" style="background:var(--bg2)">
+  <div class="section-inner">
+    <div class="section-tag">Career Journey</div>
+    <h2 class="section-title">Three Decades of<br><span class="grd">Market Leadership</span></h2>
+    <div class="tl-grid">
+      <div class="tl-card tl-feat"><div class="tl-year">1991 — Present</div><div class="tl-role">32+ Years in Indian Capital Markets</div><div class="tl-org">NSE · BSE · MCX · CSE · Thrissur, Kerala</div><div class="tl-desc">From practitioner to SEBI-registered analyst and CEO of a 220+ branch brokerage — three decades of market expertise and investor advocacy.</div></div>
+      <div class="tl-card"><div class="tl-year">1998 — 2000</div><div class="tl-role">Treasurer & Governing Council Member</div><div class="tl-org">Cochin Stock Exchange Ltd.</div><div class="tl-desc">Elected to the Governing Board of Cochin Stock Exchange, serving as Treasurer during a pivotal era for Indian capital markets.</div></div>
+      <div class="tl-card"><div class="tl-year">2002 — 2006</div><div class="tl-role">Regional Head — Kerala</div><div class="tl-org">Sharekhan Ltd.</div><div class="tl-desc">Led Sharekhan's entire Kerala operations, building a strong retail investor network and trusted brand across the state.</div></div>
+      <div class="tl-card"><div class="tl-year">Post 2006</div><div class="tl-role">Founder, MD </div><div class="tl-org">Sharewealth Group · Thrissur</div><div class="tl-desc">Founded Sharewealth Securities Ltd. — scaled to 220+ branches, NSE/BSE/MCX memberships, CDSL DP status, overseas JV in Abu Dhabi.</div></div>
+      <div class="tl-card"><div class="tl-year">Ongoing</div><div class="tl-role">SEBI Research Analyst</div><div class="tl-org">INH000010496 · Moat Financial</div><div class="tl-desc">SEBI-registered equity and commodity research analyst. Executive team member at Moat Financial Services.</div></div>
+      <div class="tl-card"><div class="tl-year">May 2023 →</div><div class="tl-role">AI & Markets Campaign</div><div class="tl-org">Pan-Kerala Investor Education</div><div class="tl-desc">Launched Kerala's first major awareness initiative on "AI and its impact on the stock market" across investor education seminars.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- BLOGS HOME -->
+<section id="blogs-home">
+  <div class="section-inner">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div>
+        <div class="section-tag">Latest Insights</div>
+        <h2 class="section-title">Research &<br><span class="grd">Market Articles</span></h2>
+        <p class="section-lead">Fresh perspectives on markets, economy, and investing.</p>
+      </div>
+      <button class="hero-cta-primary" onclick="showPage('blog-list')" style="margin-bottom:14px">View All Articles →</button>
+    </div>
+    <div class="blogs-grid" id="homeBlogsGrid">
+      <div class="no-blogs"><div class="nb-icon">✍️</div><p>Blog articles will appear here once published.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- MEDIA -->
+<section id="media" style="background:var(--bg2)">
+  <div class="section-inner">
+    <div class="section-tag">Media & Talks</div>
+    <h2 class="section-title" style="font-size:clamp(26px,3vw,40px)">Insights That Reach <span class="grd">Every Investor</span></h2>
+    <p class="section-lead" style="margin-bottom:32px">From print columns to live podcasts — Ramki's voice spans every medium that matters.</p>
+    <div class="media-list">
+      <div class="media-row"><div class="media-icon" style="background:linear-gradient(135deg,rgba(108,99,255,.25),rgba(0,212,255,.2))">📰</div><div><div class="media-type-lbl">Print Column</div><div class="media-name">Sampadyam</div><div class="media-src">Malayala Manorama</div></div></div>
+      <div class="media-row"><div class="media-icon" style="background:linear-gradient(135deg,rgba(0,229,195,.2),rgba(0,212,255,.15))">📗</div><div><div class="media-type-lbl">Magazine</div><div class="media-name">Dhanam Magazine</div><div class="media-src">Business & Finance</div></div></div>
+      <div class="media-row"><div class="media-icon" style="background:linear-gradient(135deg,rgba(245,200,66,.2),rgba(255,107,107,.15))">📘</div><div><div class="media-type-lbl">Newspaper</div><div class="media-name">Business Deepika</div><div class="media-src">Market Commentary</div></div></div>
+      <div class="media-row"><div class="media-icon" style="background:linear-gradient(135deg,rgba(255,107,107,.2),rgba(108,99,255,.15))">🎙️</div><div><div class="media-type-lbl">Podcast · Daily</div><div class="media-name">Sharewealth Podcast</div><div class="media-src">Daily Market Analysis</div></div></div>
+      <div class="media-row"><div class="media-icon" style="background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(0,229,195,.12))">📺</div><div><div class="media-type-lbl">TV Panellist</div><div class="media-name">Kerala Media</div><div class="media-src">Financial Channels</div></div></div>
+      <div class="media-row"><div class="media-icon" style="background:linear-gradient(135deg,rgba(108,99,255,.25),rgba(255,107,107,.1))">🎤</div><div><div class="media-type-lbl">Speaker</div><div class="media-name">NSE / BSE / SEBI</div><div class="media-src">NSDL · CDSL Events</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- AFFILIATIONS -->
+<section id="affiliations">
+  <div class="section-inner">
+    <div class="section-tag">Affiliations</div>
+    <h2 class="section-title">Institutional Ties That<br><span class="grd">Define Credibility</span></h2>
+    <div class="affil-grid">
+      <div class="affil-card"><span class="affil-logo">🏛️</span><div class="affil-name">SEBI</div><div class="affil-role">Registered Analyst<br>INH000010496</div></div>
+      <div class="affil-card"><span class="affil-logo">📈</span><div class="affil-name">NSE India</div><div class="affil-role">National Stock Exchange<br>Member</div></div>
+      <div class="affil-card"><span class="affil-logo">📉</span><div class="affil-name">BSE India</div><div class="affil-role">Bombay Stock Exchange<br>Member</div></div>
+      <div class="affil-card"><span class="affil-logo">🥇</span><div class="affil-name">MCX</div><div class="affil-role">Commodity Exchange<br>via Sharewealth</div></div>
+      <div class="affil-card"><span class="affil-logo">🏦</span><div class="affil-name">CDSL</div><div class="affil-role">Depository Services<br>DP ID: 12047600</div></div>
+      <div class="affil-card"><span class="affil-logo">🎓</span><div class="affil-name">NISM</div><div class="affil-role">Nat. Inst. Sec. Markets<br>PG Portfolio Mgmt</div></div>
+      <div class="affil-card"><span class="affil-logo">🏙️</span><div class="affil-name">Cochin Stock Exchange</div><div class="affil-role">Former Governing Board<br>Ex-Treasurer (1998–2000)</div></div>
+      <div class="affil-card"><span class="affil-logo">💼</span><div class="affil-name">Moat Financial</div><div class="affil-role">An Investment Lifestyle<br>Executive Team</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="div-line"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-tag">Contact</div>
+    <h2 class="section-title">Let's Talk<br><span class="grd">Investments & Markets</span></h2>
+    <div class="contact-grid">
+      <div>
+        <p style="font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:28px">Whether you're a retail investor, institution, or media house — reach out directly.</p>
+        <div class="cinfo-item"><div class="cinfo-icon">🏢</div><div><div class="cinfo-lbl">Office</div><div class="cinfo-val">20/232 Adiyat Lane, M.G Road<br>West Fort, Thrissur 680004, Kerala</div></div></div>
+        <div class="cinfo-item"><div class="cinfo-icon">📧</div><div><div class="cinfo-lbl">Email</div><div class="cinfo-val">grievance@sharewealthindia.com</div></div></div>
+        <div class="cinfo-item"><div class="cinfo-icon">🌐</div><div><div class="cinfo-lbl">Website</div><div class="cinfo-val">www.sharewealthindia.com</div></div></div>
+        <div class="cinfo-item"><div class="cinfo-icon">🏛️</div><div><div class="cinfo-lbl">SEBI Reg.</div><div class="cinfo-val">INH000010496 · Research Analyst</div></div></div>
+        <div class="disclaimer-box"><strong>⚠ Disclaimer:</strong> Investments in securities market are subject to market risks. Read all documents carefully before investing. SEBI Reg. No. INH000010496.</div>
+      </div>
+      <div class="contact-form">
+        <div style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:4px">Send a Message</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:20px">Typically responds within 24 hours</div>
+        <div id="contactErr" style="display:none;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.25);color:rgba(255,107,107,.9);border-radius:10px;padding:12px;font-size:13px;margin-bottom:14px"></div>
+        <div class="fg2">
+          <div class="fg"><label>Full Name *</label><input type="text" id="contactName" placeholder="Your full name"></div>
+          <div class="fg"><label>Email *</label><input type="email" id="contactEmail" placeholder="your@email.com"></div>
+        </div>
+        <div class="fg"><label>Phone</label><input type="tel" id="contactPhone" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="fg"><label>Subject</label>
+          <select id="contactSubject">
+            <option>Research &amp; Stock Analysis</option>
+            <option>Portfolio Advisory</option>
+            <option>Speaking Request</option>
+            <option>Media / Press</option>
+            <option>General Enquiry</option>
+          </select>
+        </div>
+        <div class="fg"><label>Message *</label><textarea id="contactMessage" rows="4" placeholder="Your query or requirement..."></textarea></div>
+        <button class="btn-submit" id="contactSubmitBtn" onclick="sendContactForm()">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-brand">RAMKI<span>Ramakrishnan T.B.</span></div><p style="font-size:13px;color:var(--text3);margin-top:10px;max-width:240px;line-height:1.6">SEBI Registered Research Analyst. MD  Sharewealth Securities. Thrissur, Kerala.</p></div>
+    <div>
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;font-weight:700">Quick Links</div>
+      <ul class="footer-links">
+        <li><a onclick="goHome('about')">About Ramki</a></li>
+        <li><a onclick="goHome('expertise')">Expertise</a></li>
+        <li><a onclick="goHome('journey')">Career Journey</a></li>
+        <li><a onclick="showPage('blog-list')">Blog & Articles</a></li>
+        <li><a onclick="goHome('contact')">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;font-weight:700">Companies</div>
+      <ul class="footer-links">
+        <li><a>Sharewealth Securities Ltd.</a></li>
+        <li><a>Sharewealth Commodities Pvt. Ltd.</a></li>
+        <li><a>Sharewealth Chits Ltd.</a></li>
+        <li><a>SI Capital & Financial Services</a></li>
+        <li><a>Moat Financial Services</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Ramakrishnan T.B. All rights reserved.</div>
+    <div class="footer-sebi">SEBI RA: INH000010496 | NSE/BSE: INZ000176636 | CDSL DP: 12047600</div>
+  </div>
+</footer>
+</div><!-- /page-home -->
+
+<!-- ═══════════════ BLOG LIST PAGE ═══════════════ -->
+<div class="page" id="page-blog-list">
+  <div class="blog-page-wrap">
+    <div class="blog-hero-section">
+      <div class="blog-hero-inner">
+        <div class="section-tag">Research & Insights</div>
+        <h2 class="section-title" style="font-size:clamp(28px,3vw,48px)">Blog & <span class="grd">Market Articles</span></h2>
+        <p class="section-lead">Deep-dive research, market analysis, and investor education from SEBI RA Ramakrishnan T.B.</p>
+        <div class="blog-search-row">
+          <input class="blog-search-inp" id="blogSearchInput" placeholder="🔍 Search articles..." oninput="filterBlogList()">
+          <button class="filter-btn active" onclick="setBlogFilter('all',this)">All</button>
+          <button class="filter-btn" onclick="setBlogFilter('Market Analysis',this)">Market Analysis</button>
+          <button class="filter-btn" onclick="setBlogFilter('Equity Research',this)">Equity</button>
+          <button class="filter-btn" onclick="setBlogFilter('Commodities',this)">Commodities</button>
+          <button class="filter-btn" onclick="setBlogFilter('AI & Finance',this)">AI & Finance</button>
+          <button class="filter-btn" onclick="setBlogFilter('Economy',this)">Economy</button>
+        </div>
+      </div>
+    </div>
+    <div class="blog-list-inner">
+      <div class="blog-list-grid" id="blogListGrid">
+        <div class="no-blogs" style="grid-column:span 3"><div class="nb-icon">📝</div><p>No articles yet. Check back soon!</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ BLOG DETAIL PAGE ═══════════════ -->
+<div class="page" id="page-blog-detail">
+  <div class="blog-page-wrap">
+    <div class="blog-detail-wrap" id="blogDetailContent"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ LOGIN PAGE ═══════════════ -->
+<div class="page" id="page-login">
+  <div class="login-page">
+    <div class="login-box">
+      <div class="login-logo">RAMKI</div>
+      <div class="login-sub">Admin Dashboard Login</div>
+      <div class="err-box" id="loginErr">Invalid username or password</div>
+      <div class="fg"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" onkeypress="if(event.key==='Enter')doLogin()"></div>
+      <div class="fg"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" onkeypress="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn-submit" id="loginBtn" onclick="doLogin()">Sign In →</button>
+      <div style="text-align:center;margin-top:16px"><button onclick="showPage('home')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;font-family:inherit">← Back to Website</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DASHBOARD PAGE ═══════════════ -->
+<div class="page" id="page-dashboard">
+  <div class="dash-wrap">
+    <div class="dash-header">
+      <div><div class="dash-title">Admin Dashboard</div><div class="dash-subtitle">Welcome, <span id="dashUser">Admin</span></div></div>
+      <div class="dash-header-btns">
+        <button class="btn-new-post" onclick="openModal()">+ New Blog Post</button>
+        <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+      </div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-tabs">
+        <div class="dash-tab active" onclick="switchTab('analytics',this)">📊 Analytics</div>
+        <div class="dash-tab" onclick="switchTab('blogs',this)">📝 Manage Blogs</div>
+        <div class="dash-tab" onclick="switchTab('hero',this)">🖼️ Manage Images</div>
+        <div class="dash-tab" onclick="switchTab('settings',this)">⚙️ Settings</div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="dash-panel active" id="panel-analytics">
+        <div class="ana-grid">
+          <div class="ana-card"><div class="ana-lbl">Page Views</div><div class="ana-val" id="ana-pv">—</div><div class="ana-sub">All time site visits</div></div>
+          <div class="ana-card"><div class="ana-lbl">Published Blogs</div><div class="ana-val" id="ana-pub">—</div><div class="ana-sub">Live on site</div></div>
+          <div class="ana-card"><div class="ana-lbl">Draft Blogs</div><div class="ana-val" id="ana-dr">—</div><div class="ana-sub">Not published</div></div>
+          <div class="ana-card"><div class="ana-lbl">Total Articles</div><div class="ana-val" id="ana-all">—</div><div class="ana-sub">All blog posts</div></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-lbl">📈 Daily Page Views — Last 14 Days</div>
+          <div class="mini-chart" id="miniChart"></div>
+          <div class="chart-xlbls" id="chartXLabels"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-lbl" style="margin-bottom:12px">🗞️ Recent Blog Posts</div>
+          <table class="blog-tbl" id="recentBlogTbl"><thead><tr><th>Title</th><th>Category</th><th>Views</th><th>Status</th><th>Date</th></tr></thead><tbody id="recentBlogBody"><tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px">Loading...</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- MANAGE BLOGS -->
+      <div class="dash-panel" id="panel-blogs">
+        <div class="tbl-header">
+          <div class="tbl-title">All Blog Posts</div>
+          <button class="btn-new-post" onclick="openModal()">+ New Post</button>
+        </div>
+        <table class="blog-tbl">
+          <thead><tr><th>Title</th><th>Category</th><th>Views</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="allBlogsBody"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">Loading...</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- HOMEPAGE PHOTO -->
+      <div class="dash-panel" id="panel-hero">
+        <div class="hero-photo-mgr">
+          <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px">Homepage Hero Photo</div>
+          <div style="font-size:13px;color:var(--text3);margin-bottom:22px">This photo appears in the centre of the homepage hero section. Recommended: portrait orientation, high quality, min 800×1000px.</div>
+
+          <!-- Current photo preview -->
+          <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;margin-bottom:24px">
+            <div style="flex:0 0 auto">
+              <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Current Photo</div>
+              <div id="heroCurrentWrap" style="width:160px;height:200px;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center">
+                <img id="heroPhotoCurrent" alt="Current hero photo" style="display:none;width:100%;height:100%;object-fit:cover;object-position:top center">
+                <div id="heroCurrentEmpty" style="text-align:center;padding:16px;color:var(--text3);font-size:12px">
+                  <div style="font-size:28px;margin-bottom:8px">👤</div>
+                  No photo set
+                </div>
+              </div>
+              <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+                <div id="heroPhotoStatus" style="font-size:11px;color:var(--text3)">No photo uploaded yet</div>
+                <button id="removeHeroBtn" style="display:none;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);color:var(--accent3);padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;width:fit-content" onclick="removeHeroPhoto()">✕ Remove Photo</button>
+              </div>
+            </div>
+
+            <div style="flex:1;min-width:220px">
+              <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Upload New Photo</div>
+              <!-- New photo preview -->
+              <img id="heroNewPreview" style="display:none;width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-bottom:12px" alt="New photo preview">
+              <div class="photo-upload-zone" id="heroUploadZone" ondrop="heroFileDrop(event)" ondragover="event.preventDefault()">
+                <input type="file" id="heroPhotoFile" accept="image/*" onchange="heroFilePreview(this)">
+                <div class="puz-icon" id="heroUploadIcon">📷</div>
+                <div class="puz-text" id="heroUploadText">Drag & drop or <strong>click to select</strong><br><span style="font-size:11px">JPG, PNG, WebP — max 8MB</span></div>
+              </div>
+              <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+                <button class="btn-new-post" id="uploadHeroBtn" onclick="uploadHeroPhoto()" style="opacity:.5;pointer-events:none" disabled>Upload Photo</button>
+                <button id="heroClearNewBtn" style="display:none;background:var(--card);border:1px solid var(--border);color:var(--text3);padding:10px 18px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="heroClearNew()">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABOUT / OFFICIAL PHOTO -->
+        <div class="hero-photo-mgr">
+          <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px">About Section — Official Photo</div>
+          <div style="font-size:13px;color:var(--text3);margin-bottom:22px">This photo appears in the About section beside Credentials &amp; Milestones. Recommended: portrait, min 600×800px.</div>
+
+          <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+            <div style="flex:0 0 auto">
+              <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Current Photo</div>
+              <div style="width:160px;height:200px;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center">
+                <img id="aboutPhotoCurrent" alt="Official photo" style="display:none;width:100%;height:100%;object-fit:cover;object-position:top center">
+                <div id="aboutCurrentEmpty" style="text-align:center;padding:16px;color:var(--text3);font-size:12px">
+                  <div style="font-size:28px;margin-bottom:8px">👤</div>
+                  No photo set
+                </div>
+              </div>
+              <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+                <div id="aboutPhotoStatus" style="font-size:11px;color:var(--text3)">No photo uploaded yet</div>
+                <button id="removeAboutBtn" style="display:none;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);color:var(--accent3);padding:8px 16px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;width:fit-content" onclick="removeAboutPhoto()">✕ Remove Photo</button>
+              </div>
+            </div>
+
+            <div style="flex:1;min-width:220px">
+              <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Upload New Photo</div>
+              <img id="aboutNewPreview" style="display:none;width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-bottom:12px" alt="New photo preview">
+              <div class="photo-upload-zone" ondrop="aboutFileDrop(event)" ondragover="event.preventDefault()">
+                <input type="file" id="aboutPhotoFile" accept="image/*" onchange="aboutFilePreview(this)">
+                <div class="puz-icon" id="aboutUploadIcon">📷</div>
+                <div class="puz-text" id="aboutUploadText">Drag & drop or <strong>click to select</strong><br><span style="font-size:11px">JPG, PNG, WebP — max 8MB</span></div>
+              </div>
+              <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+                <button class="btn-new-post" id="uploadAboutBtn" onclick="uploadAboutPhoto()" style="opacity:.5;pointer-events:none" disabled>Upload Photo</button>
+                <button id="aboutClearNewBtn" style="display:none;background:var(--card);border:1px solid var(--border);color:var(--text3);padding:10px 18px;border-radius:50px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit" onclick="aboutClearNew()">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="dash-panel" id="panel-settings">
+        <div class="settings-grid">
+          <div>
+            <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:20px">Site Information</div>
+            <div class="fg"><label>Site Title</label><input type="text" id="siteTitle" value="RAMKI — Ramakrishnan T.B."></div>
+            <div class="fg"><label>SEBI Registration</label><input type="text" id="siteSebi" value="INH000010496"></div>
+            <div class="fg"><label>Contact Email</label><input type="email" id="siteEmail" value="grievance@sharewealthindia.com"></div>
+            <button class="btn-submit" onclick="saveSettings()" style="max-width:200px">Save Settings</button>
+          </div>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:20px">Change Password</div>
+            <div class="err-box" id="pwErr"></div>
+            <div style="background:rgba(0,229,195,.06);border:1px solid rgba(0,229,195,.2);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--teal);margin-bottom:16px" id="pwSuccess" style="display:none"></div>
+            <div class="fg"><label>Current Password</label><input type="password" id="curPass" placeholder="Current password"></div>
+            <div class="fg"><label>New Password</label><input type="password" id="newPass" placeholder="Min. 6 characters"></div>
+            <div class="fg"><label>Confirm New Password</label><input type="password" id="confPass" placeholder="Repeat new password"></div>
+            <button class="btn-submit" onclick="changePassword()" style="max-width:200px">Change Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═════════════════════════════════════════════════
+//  STATE & TOKEN
+// ═════════════════════════════════════════════════
+// Auth: HttpOnly cookie — JS never sees the token
+let currentUser = sessionStorage.getItem('ramki_user') || '';
+let isAuthed    = false;
+let blogFilter  = 'all';
+let deletingId  = null;
+let editingId   = null;
+
+// ═════════════════════════════════════════════════
+//  API — sends HttpOnly cookie automatically
+// ═════════════════════════════════════════════════
+async function api(method, url, body, isFormData) {
+  const opts = { method, credentials: 'include', headers: {} };
+  if (body && !isFormData) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+  if (body && isFormData)  opts.body = body;
+  const res = await fetch(url, opts);
+  if (res.status === 401) {
+    isAuthed = false; currentUser = ''; sessionStorage.removeItem('ramki_user');
+    updateNavLogin();
+    if (url !== '/api/login' && url !== '/api/me') showToast('Session expired. Please log in again.','info');
+  }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+async function checkSession() {
+  try {
+    const d = await api('GET', '/api/me');
+    isAuthed = true; currentUser = d.user.username;
+    sessionStorage.setItem('ramki_user', currentUser);
+  } catch {
+    isAuthed = false; currentUser = ''; sessionStorage.removeItem('ramki_user');
+  }
+  updateNavLogin();
+}
+
+// ═════════════════════════════════════════════════
+//  THEME
+// ═════════════════════════════════════════════════
+let theme = localStorage.getItem('ramki_theme') || 'dark';
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeBtn').textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('ramki_theme', theme);
+  applyTheme();
+}
+applyTheme();
+
+// ═════════════════════════════════════════════════
+//  ROUTING
+// ═════════════════════════════════════════════════
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + name);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+  if (name === 'blog-list')  loadBlogList();
+  if (name === 'dashboard')  { if(!isAuthed){showPage('login');return;} loadDashboard(); }
+  if (name === 'home')       { loadHomeBlogs(); loadHeroPhoto(); }
+  updateNavLogin();
+}
+function goHome(id) {
+  showPage('home');
+  setTimeout(() => { const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); }, 120);
+}
+function updateNavLogin() {
+  const btn = document.getElementById('navLoginBtn');
+  if (isAuthed) { btn.textContent = 'Dashboard'; btn.onclick = () => showPage('dashboard'); }
+  else           { btn.textContent = 'Login';     btn.onclick = () => showPage('login'); }
+}
+
+// ═════════════════════════════════════════════════
+//  AUTH
+// ═════════════════════════════════════════════════
+async function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const btn = document.getElementById('loginBtn');
+  btn.innerHTML = '<span class="spinner"></span> Signing in...';
+  btn.disabled = true;
+  document.getElementById('loginErr').classList.remove('show');
+  try {
+    const data = await api('POST', '/api/login', { username: u, password: p });
+    // Cookie is set by server (HttpOnly) — we only store display name
+    isAuthed = true; currentUser = data.user.username;
+    sessionStorage.setItem('ramki_user', currentUser);
+    showPage('dashboard');
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+  } catch (e) {
+    document.getElementById('loginErr').textContent = e.message;
+    document.getElementById('loginErr').classList.add('show');
+  }
+  btn.innerHTML = 'Sign In →'; btn.disabled = false;
+}
+async function doLogout() {
+  try { await api('POST', '/api/logout'); } catch {}
+  isAuthed = false; currentUser = '';
+  sessionStorage.removeItem('ramki_user');
+  showPage('home'); updateNavLogin();
+  showToast('Signed out successfully','info');
+}
+
+// ═════════════════════════════════════════════════
+//  CHANGE PASSWORD
+// ═════════════════════════════════════════════════
+async function changePassword() {
+  const cur  = document.getElementById('curPass').value;
+  const np   = document.getElementById('newPass').value;
+  const conf = document.getElementById('confPass').value;
+  const errEl = document.getElementById('pwErr');
+  const okEl  = document.getElementById('pwSuccess');
+  errEl.classList.remove('show'); okEl.style.display = 'none';
+  if (!cur || !np || !conf) { errEl.textContent='All fields are required'; errEl.classList.add('show'); return; }
+  if (np !== conf)           { errEl.textContent='New passwords do not match'; errEl.classList.add('show'); return; }
+  if (np.length < 8)         { errEl.textContent='Password must be at least 8 characters'; errEl.classList.add('show'); return; }
+  if (!/[a-zA-Z]/.test(np)||!/[0-9]/.test(np)) { errEl.textContent='Password must contain at least one letter and one number'; errEl.classList.add('show'); return; }
+  try {
+    await api('POST', '/api/change-password', { currentPassword: cur, newPassword: np });
+    okEl.textContent = '✓ Password changed! You will be signed out now.'; okEl.style.display = 'block';
+    document.getElementById('curPass').value = '';
+    document.getElementById('newPass').value = '';
+    document.getElementById('confPass').value = '';
+    showToast('Password changed! Please log in again.','success');
+    // Server revoked the token — redirect to login after 2s
+    setTimeout(() => { isAuthed=false; currentUser=''; sessionStorage.removeItem('ramki_user'); showPage('login'); updateNavLogin(); }, 2200);
+  } catch(e) { errEl.textContent = e.message; errEl.classList.add('show'); }
+}
+
+// ═════════════════════════════════════════════════
+//  SETTINGS
+// ═════════════════════════════════════════════════
+async function saveSettings() {
+  try {
+    await api('PUT', '/api/settings', {
+      title : document.getElementById('siteTitle').value,
+      sebi  : document.getElementById('siteSebi').value,
+      email : document.getElementById('siteEmail').value,
+    });
+    showToast('Settings saved!','success');
+  } catch(e) { showToast(e.message,'error'); }
+}
+async function loadSettings() {
+  try {
+    const s = await api('GET', '/api/settings');
+    if (s.title) document.getElementById('siteTitle').value = s.title;
+    if (s.sebi)  document.getElementById('siteSebi').value  = s.sebi;
+    if (s.email) document.getElementById('siteEmail').value = s.email;
+  } catch {}
+}
+
+// ═════════════════════════════════════════════════
+//  PHOTOS (hero + about)
+// ═════════════════════════════════════════════════
+async function loadHeroPhoto() {
+  try {
+    const s = await api('GET', '/api/settings');
+
+    // ── Homepage hero image ──
+    const img = document.getElementById('heroPhotoImg');
+    const ph  = document.getElementById('heroPhotoPlaceholder');
+    if (s.heroPhoto) {
+      img.src = s.heroPhoto; img.style.display = 'block'; ph.style.display = 'none';
+    } else {
+      img.style.display = 'none'; ph.style.display = 'flex';
+    }
+
+    // ── About section official photo ──
+    const aboutImg = document.getElementById('aboutPhotoImg');
+    const aboutPh  = document.getElementById('aboutPhotoPlaceholder');
+    if (aboutImg) {
+      if (s.aboutPhoto) {
+        aboutImg.src = s.aboutPhoto; aboutImg.style.display = 'block';
+        if (aboutPh) aboutPh.style.display = 'none';
+      } else {
+        aboutImg.style.display = 'none';
+        if (aboutPh) aboutPh.style.display = 'flex';
+      }
+    }
+
+    // ── Dashboard: hero photo panel ──
+    const cur   = document.getElementById('heroPhotoCurrent');
+    const empty = document.getElementById('heroCurrentEmpty');
+    const st    = document.getElementById('heroPhotoStatus');
+    const rb    = document.getElementById('removeHeroBtn');
+    if (cur) {
+      if (s.heroPhoto) {
+        cur.src = s.heroPhoto; cur.style.display = 'block';
+        if (empty) empty.style.display = 'none';
+        st.textContent = '✓ Live on homepage'; st.style.color = 'var(--teal)';
+        rb.style.display = 'inline-flex';
+      } else {
+        cur.style.display = 'none';
+        if (empty) empty.style.display = 'block';
+        st.textContent = 'No photo uploaded yet'; st.style.color = '';
+        rb.style.display = 'none';
+      }
+    }
+
+    // ── Dashboard: about photo panel ──
+    const aCur   = document.getElementById('aboutPhotoCurrent');
+    const aEmpty = document.getElementById('aboutCurrentEmpty');
+    const aSt    = document.getElementById('aboutPhotoStatus');
+    const aRb    = document.getElementById('removeAboutBtn');
+    if (aCur) {
+      if (s.aboutPhoto) {
+        aCur.src = s.aboutPhoto; aCur.style.display = 'block';
+        if (aEmpty) aEmpty.style.display = 'none';
+        aSt.textContent = '✓ Live on About page'; aSt.style.color = 'var(--teal)';
+        aRb.style.display = 'inline-flex';
+      } else {
+        aCur.style.display = 'none';
+        if (aEmpty) aEmpty.style.display = 'block';
+        aSt.textContent = 'No photo uploaded yet'; aSt.style.color = '';
+        aRb.style.display = 'none';
+      }
+    }
+  } catch {}
+}
+
+function heroFilePreview(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('heroNewPreview');
+    prev.src = e.target.result; prev.style.display = 'block';
+    document.getElementById('heroUploadIcon').style.display = 'none';
+    document.getElementById('heroUploadText').style.display = 'none';
+    const btn = document.getElementById('uploadHeroBtn');
+    btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; btn.disabled = false;
+    document.getElementById('heroClearNewBtn').style.display = 'inline-block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function heroFileDrop(e) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const input = document.getElementById('heroPhotoFile');
+  const dt = new DataTransfer(); dt.items.add(file); input.files = dt.files;
+  heroFilePreview(input);
+}
+
+function heroClearNew() {
+  document.getElementById('heroPhotoFile').value = '';
+  const prev = document.getElementById('heroNewPreview');
+  prev.src = ''; prev.style.display = 'none';
+  document.getElementById('heroUploadIcon').style.display = '';
+  document.getElementById('heroUploadText').style.display = '';
+  const btn = document.getElementById('uploadHeroBtn');
+  btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; btn.disabled = true;
+  document.getElementById('heroClearNewBtn').style.display = 'none';
+}
+
+async function uploadHeroPhoto() {
+  const file = document.getElementById('heroPhotoFile').files[0];
+  if (!file) { showToast('Please select a photo first', 'error'); return; }
+  const btn = document.getElementById('uploadHeroBtn');
+  btn.innerHTML = '<span class="spinner"></span> Uploading...'; btn.disabled = true;
+  try {
+    const fd = new FormData(); fd.append('photo', file);
+    await api('POST', '/api/upload/hero-photo', fd, true);
+    showToast('Hero photo updated!', 'success');
+    heroClearNew();
+    loadHeroPhoto();
+  } catch(e) { showToast(e.message, 'error'); }
+  btn.innerHTML = 'Upload Photo';
+  btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; btn.disabled = true;
+}
+
+async function removeHeroPhoto() {
+  if (!confirm('Remove the homepage hero photo?')) return;
+  try {
+    await api('DELETE', '/api/upload/hero-photo');
+    showToast('Photo removed', 'success');
+    loadHeroPhoto();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+// ── About / Official Photo ──
+function aboutFilePreview(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('aboutNewPreview');
+    prev.src = e.target.result; prev.style.display = 'block';
+    document.getElementById('aboutUploadIcon').style.display = 'none';
+    document.getElementById('aboutUploadText').style.display = 'none';
+    const btn = document.getElementById('uploadAboutBtn');
+    btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; btn.disabled = false;
+    document.getElementById('aboutClearNewBtn').style.display = 'inline-block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function aboutFileDrop(e) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const input = document.getElementById('aboutPhotoFile');
+  const dt = new DataTransfer(); dt.items.add(file); input.files = dt.files;
+  aboutFilePreview(input);
+}
+
+function aboutClearNew() {
+  document.getElementById('aboutPhotoFile').value = '';
+  const prev = document.getElementById('aboutNewPreview');
+  prev.src = ''; prev.style.display = 'none';
+  document.getElementById('aboutUploadIcon').style.display = '';
+  document.getElementById('aboutUploadText').style.display = '';
+  const btn = document.getElementById('uploadAboutBtn');
+  btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; btn.disabled = true;
+  document.getElementById('aboutClearNewBtn').style.display = 'none';
+}
+
+async function uploadAboutPhoto() {
+  const file = document.getElementById('aboutPhotoFile').files[0];
+  if (!file) { showToast('Please select a photo first', 'error'); return; }
+  const btn = document.getElementById('uploadAboutBtn');
+  btn.innerHTML = '<span class="spinner"></span> Uploading...'; btn.disabled = true;
+  try {
+    const fd = new FormData(); fd.append('photo', file);
+    await api('POST', '/api/upload/about-photo', fd, true);
+    showToast('Official photo updated!', 'success');
+    aboutClearNew();
+    loadHeroPhoto();
+  } catch(e) { showToast(e.message, 'error'); }
+  btn.innerHTML = 'Upload Photo';
+  btn.style.opacity = '.5'; btn.style.pointerEvents = 'none'; btn.disabled = true;
+}
+
+async function removeAboutPhoto() {
+  if (!confirm('Remove the official About section photo?')) return;
+  try {
+    await api('DELETE', '/api/upload/about-photo');
+    showToast('Photo removed', 'success');
+    loadHeroPhoto();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+// ═════════════════════════════════════════════════
+//  BLOG HELPERS
+// ═════════════════════════════════════════════════
+function md2html(md) {
+  if (!md) return '';
+  return md
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g,'<ul>$&</ul>')
+    .replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>')
+    .replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img src="$2" alt="$1" style="max-width:100%;border-radius:8px;margin:12px 0">')
+    .split('\n').map(l=>l.trim()&&!l.startsWith('<')?`<p>${l}</p>`:l).join('\n');
+}
+function fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+function shareLinks(blog) {
+  const url = encodeURIComponent(location.origin + location.pathname + '#blog-' + blog._id);
+  const t   = encodeURIComponent(blog.title + ' — SEBI Research Analyst Ramakrishnan T.B.');
+  return {
+    li : `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+    tw : `https://twitter.com/intent/tweet?text=${t}&url=${url}`,
+    wa : `https://wa.me/?text=${t}%20${url}`,
+    tg : `https://t.me/share/url?url=${url}&text=${t}`,
+    md : `https://medium.com/new-story`,
+    fb : `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+  };
+}
+function blogCardHTML(b, cols=3) {
+  const lnk = shareLinks(b);
+  return `<div class="blog-card" onclick="openBlogDetail('${b._id}')">
+    <div class="blog-card-img">${b.photo ? `<img src="${b.photo}" alt="${b.title}">` : (b.emoji||'📊')}</div>
+    <div class="blog-card-body">
+      <div class="blog-cat">${b.category||'Article'}</div>
+      <div class="blog-title-txt">${b.title}</div>
+      <div class="blog-excerpt">${b.excerpt||b.content?.substring(0,140)||''}</div>
+      <div class="blog-meta"><span class="blog-date">${fmtDate(b.createdAt)}</span><span class="blog-views">👁 ${b.views||0}</span></div>
+      <div class="share-btns-sm" onclick="event.stopPropagation()">
+        <a href="${lnk.li}" target="_blank" class="sbs sbs-li">in</a>
+        <a href="${lnk.tw}" target="_blank" class="sbs sbs-tw">𝕏</a>
+        <a href="${lnk.wa}" target="_blank" class="sbs sbs-wa">💬</a>
+        <a href="${lnk.tg}" target="_blank" class="sbs sbs-tg">✈️</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═════════════════════════════════════════════════
+//  HOME BLOGS
+// ═════════════════════════════════════════════════
+async function loadHomeBlogs() {
+  try {
+    const blogs = await api('GET', '/api/blogs');
+    const grid = document.getElementById('homeBlogsGrid');
+    const top3 = blogs.slice(0, 3);
+    if (!top3.length) {
+      grid.innerHTML = '<div class="no-blogs"><div class="nb-icon">✍️</div><p>Blog articles will appear here once published.</p></div>';
+    } else {
+      grid.innerHTML = top3.map(b => blogCardHTML(b)).join('');
+    }
+  } catch { }
+}
+
+// ═════════════════════════════════════════════════
+//  BLOG LIST PAGE
+// ═════════════════════════════════════════════════
+let allPublishedBlogs = [];
+async function loadBlogList() {
+  try {
+    allPublishedBlogs = await api('GET', '/api/blogs');
+    filterBlogList();
+  } catch { }
+}
+function setBlogFilter(f, btn) {
+  blogFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterBlogList();
+}
+function filterBlogList() {
+  const q = (document.getElementById('blogSearchInput')?.value || '').toLowerCase();
+  let list = [...allPublishedBlogs];
+  if (blogFilter !== 'all') list = list.filter(b => b.category === blogFilter);
+  if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || (b.excerpt||'').toLowerCase().includes(q) || (b.content||'').toLowerCase().includes(q));
+  const grid = document.getElementById('blogListGrid');
+  if (!grid) return;
+  if (!list.length) {
+    grid.innerHTML = '<div class="no-blogs" style="grid-column:span 3"><div class="nb-icon">🔍</div><p>No articles found.</p></div>';
+  } else {
+    grid.innerHTML = list.map(b => blogCardHTML(b)).join('');
+  }
+}
+
+// ═════════════════════════════════════════════════
+//  BLOG DETAIL
+// ═════════════════════════════════════════════════
+async function openBlogDetail(id) {
+  try {
+    const b = await api('GET', `/api/blogs/${id}`);
+    const lnk = shareLinks(b);
+    const dc = document.getElementById('blogDetailContent');
+    dc.innerHTML = `
+      <button class="back-btn" onclick="history.back()||showPage('blog-list')">← Back to Articles</button>
+      <div class="detail-cat">${b.category||'Article'}</div>
+      <h1 class="detail-title">${b.title}</h1>
+      <div class="detail-meta">
+        <span>✍️ Ramakrishnan T.B. (RAMKI)</span>
+        <span>📅 ${fmtDate(b.createdAt)}</span>
+        <span>👁 ${b.views||0} views</span>
+        ${b.tags?.length ? `<span>🏷 ${b.tags.join(', ')}</span>` : ''}
+      </div>
+      ${b.photo ? `<img class="detail-cover" src="${b.photo}" alt="${b.title}" style="display:block">` : ''}
+      <div class="detail-body">${md2html(b.content)}</div>
+      <div class="share-section">
+        <h4>Share this article</h4>
+        <div class="share-btns-lg">
+          <a href="${lnk.li}" target="_blank" class="sbl sbl-li">in LinkedIn</a>
+          <a href="${lnk.tw}" target="_blank" class="sbl sbl-tw">𝕏 Twitter</a>
+          <a href="${lnk.md}" target="_blank" class="sbl sbl-md">◉ Medium</a>
+          <a href="${lnk.wa}" target="_blank" class="sbl sbl-wa">💬 WhatsApp</a>
+          <a href="${lnk.tg}" target="_blank" class="sbl sbl-tg">✈️ Telegram</a>
+          <a href="${lnk.fb}" target="_blank" class="sbl sbl-fb">f Facebook</a>
+          <button class="sbl sbl-copy" onclick="navigator.clipboard.writeText(location.href);showToast('Link copied!','success')">🔗 Copy Link</button>
+        </div>
+      </div>`;
+    showPage('blog-detail');
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+// ═════════════════════════════════════════════════
+//  BLOG EDITOR MODAL
+// ═════════════════════════════════════════════════
+function openModal(blog = null) {
+  editingId = blog ? blog._id : null;
+  document.getElementById('modalTitle').textContent = blog ? 'Edit Blog Post' : 'New Blog Post';
+  document.getElementById('blogTitle').value    = blog?.title    || '';
+  document.getElementById('blogCategory').value = blog?.category || 'Market Analysis';
+  document.getElementById('blogExcerpt').value  = blog?.excerpt  || '';
+  document.getElementById('blogContent').value  = blog?.content  || '';
+  document.getElementById('blogEmoji').value    = blog?.emoji    || '📊';
+  document.getElementById('blogTags').value     = blog?.tags?.join(', ') || '';
+  document.getElementById('removePhotoFlag').value = 'false';
+  // photo preview
+  const preview = document.getElementById('coverPhotoPreview');
+  const removeBtn = document.getElementById('removeCoverBtn');
+  if (blog?.photo) {
+    preview.src = blog.photo; preview.style.display = 'block';
+    removeBtn.style.display = 'inline-block';
+  } else {
+    preview.style.display = 'none'; preview.src = '';
+    removeBtn.style.display = 'none';
+  }
+  document.getElementById('coverPhotoInput').value = '';
+  document.getElementById('blogModal').classList.add('show');
+}
+function closeModal() { document.getElementById('blogModal').classList.remove('show'); editingId = null; }
+
+function previewCoverPhoto(input) {
+  if (!input.files[0]) return;
+  const preview = document.getElementById('coverPhotoPreview');
+  const removeBtn = document.getElementById('removeCoverBtn');
+  const reader = new FileReader();
+  reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; removeBtn.style.display = 'inline-block'; };
+  reader.readAsDataURL(input.files[0]);
+  document.getElementById('removePhotoFlag').value = 'false';
+}
+function removeCoverPhoto() {
+  document.getElementById('coverPhotoPreview').style.display = 'none';
+  document.getElementById('coverPhotoPreview').src = '';
+  document.getElementById('removeCoverBtn').style.display = 'none';
+  document.getElementById('coverPhotoInput').value = '';
+  document.getElementById('removePhotoFlag').value = 'true';
+}
+
+async function saveBlog(status) {
+  const title = document.getElementById('blogTitle').value.trim();
+  if (!title) { showToast('Please enter a title','error'); return; }
+
+  const fd = new FormData();
+  fd.append('title',       title);
+  fd.append('category',    document.getElementById('blogCategory').value);
+  fd.append('excerpt',     document.getElementById('blogExcerpt').value);
+  fd.append('content',     document.getElementById('blogContent').value);
+  fd.append('emoji',       document.getElementById('blogEmoji').value || '📊');
+  fd.append('tags',        document.getElementById('blogTags').value);
+  fd.append('status',      status);
+  fd.append('removePhoto', document.getElementById('removePhotoFlag').value);
+  const photoFile = document.getElementById('coverPhotoInput').files[0];
+  if (photoFile) fd.append('photo', photoFile);
+
+  try {
+    if (editingId) {
+      await api('PUT', `/api/blogs/${editingId}`, fd, true);
+    } else {
+      await api('POST', '/api/blogs', fd, true);
+    }
+    closeModal();
+    showToast(status === 'published' ? '🚀 Blog published!' : '💾 Draft saved!', 'success');
+    loadDashboard();
+    loadHomeBlogs();
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+function ins(pre, post) {
+  const ta = document.getElementById('blogContent');
+  const s = ta.selectionStart, e = ta.selectionEnd;
+  const sel = ta.value.substring(s, e);
+  ta.value = ta.value.substring(0, s) + pre + sel + post + ta.value.substring(e);
+  ta.focus();
+  ta.selectionStart = s + pre.length;
+  ta.selectionEnd   = s + pre.length + sel.length;
+}
+
+function insertImageInEditor() {
+  const url = prompt('Enter image URL:');
+  if (url) ins(`![Image](${url})`, '');
+}
+
+// ═════════════════════════════════════════════════
+//  DELETE MODAL
+// ═════════════════════════════════════════════════
+function openDeleteModal(id) {
+  deletingId = id;
+  document.getElementById('deleteModal').classList.add('show');
+  document.getElementById('confirmDeleteBtn').onclick = () => confirmDelete();
+}
+function closeDeleteModal() { document.getElementById('deleteModal').classList.remove('show'); deletingId = null; }
+async function confirmDelete() {
+  if (!deletingId) return;
+  try {
+    await api('DELETE', `/api/blogs/${deletingId}`);
+    closeDeleteModal();
+    showToast('Blog deleted','success');
+    loadDashboard(); loadHomeBlogs();
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+// ═════════════════════════════════════════════════
+//  TOGGLE PUBLISH
+// ═════════════════════════════════════════════════
+async function togglePublish(id, currentStatus) {
+  try {
+    const r = await api('PATCH', `/api/blogs/${id}/toggle`);
+    showToast(r.status === 'published' ? '✓ Published!' : 'Moved to Draft', 'success');
+    loadDashboard(); loadHomeBlogs();
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+// ═════════════════════════════════════════════════
+//  DASHBOARD
+// ═════════════════════════════════════════════════
+async function loadDashboard() {
+  document.getElementById('dashUser').textContent = currentUser || sessionStorage.getItem('ramki_user') || 'Admin';
+  loadSettings();
+  loadHeroPhoto();
+  try {
+    const ana = await api('GET', '/api/analytics');
+    document.getElementById('ana-pv').textContent  = ana.pageViews      || 0;
+    document.getElementById('ana-pub').textContent = ana.publishedBlogs || 0;
+    document.getElementById('ana-dr').textContent  = ana.draftBlogs     || 0;
+    document.getElementById('ana-all').textContent = ana.totalBlogs     || 0;
+
+    // chart
+    const vals = (ana.dailyViews||[]).map(d => d.count);
+    const lbls = (ana.dailyViews||[]).map(d => d.date.slice(5));
+    const max  = Math.max(...vals, 1);
+    const chart = document.getElementById('miniChart');
+    const xl    = document.getElementById('chartXLabels');
+    if (chart) chart.innerHTML = vals.map((v,i) => `<div class="mini-bar" style="height:${Math.max(4,(v/max)*76)}px" data-tip="${lbls[i]}: ${v} views"></div>`).join('');
+    if (xl)    xl.innerHTML    = lbls.map(l => `<div class="chart-xl">${l}</div>`).join('');
+
+    // recent table
+    const rb = document.getElementById('recentBlogBody');
+    if (rb) rb.innerHTML = ana.recentBlogs?.length
+      ? ana.recentBlogs.map(b => `<tr><td style="font-weight:600;color:var(--text);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.title}</td><td>${b.category||'-'}</td><td>👁 ${b.views||0}</td><td><span class="status-badge ${b.status==='published'?'st-pub':'st-dr'}">${b.status}</span></td><td>${fmtDate(b.createdAt)}</td></tr>`).join('')
+      : '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px">No blogs yet</td></tr>';
+  } catch {}
+
+  // all blogs table
+  try {
+    const blogs = await api('GET', '/api/admin/blogs');
+    const ab = document.getElementById('allBlogsBody');
+    if (ab) ab.innerHTML = blogs.length
+      ? blogs.map(b => `<tr>
+          <td style="font-weight:600;color:var(--text);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.title}</td>
+          <td>${b.category||'-'}</td>
+          <td>👁 ${b.views||0}</td>
+          <td><span class="status-badge ${b.status==='published'?'st-pub':'st-dr'}">${b.status}</span></td>
+          <td>${fmtDate(b.createdAt)}</td>
+          <td><div class="action-row">
+            <button class="act-btn act-edit" onclick="editBlog('${b._id}')">✏️ Edit</button>
+            <button class="act-btn ${b.status==='published'?'act-unp':'act-pub'}" onclick="togglePublish('${b._id}','${b.status}')">${b.status==='published'?'Unpublish':'Publish'}</button>
+            <button class="act-btn act-del" onclick="openDeleteModal('${b._id}')">🗑️ Delete</button>
+          </div></td>
+        </tr>`).join('')
+      : '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">No blogs yet. Create your first post!</td></tr>';
+  } catch {}
+}
+
+async function editBlog(id) {
+  try {
+    const b = await api('GET', `/api/blogs/${id}`);
+    openModal(b);
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + name)?.classList.add('active');
+  if (name === 'analytics') loadDashboard();
+}
+
+// ═════════════════════════════════════════════════
+//  ANALYTICS TRACKING
+// ═════════════════════════════════════════════════
+// ═════════════════════════════════════════════════
+//  CONTACT FORM
+// ═════════════════════════════════════════════════
+async function sendContactForm() {
+  const name    = document.getElementById('contactName').value.trim();
+  const email   = document.getElementById('contactEmail').value.trim();
+  const phone   = document.getElementById('contactPhone').value.trim();
+  const subject = document.getElementById('contactSubject').value;
+  const message = document.getElementById('contactMessage').value.trim();
+  const errEl   = document.getElementById('contactErr');
+  const btn     = document.getElementById('contactSubmitBtn');
+
+  errEl.style.display = 'none';
+
+  if (!name)    { errEl.textContent = 'Please enter your name.';    errEl.style.display = 'block'; return; }
+  if (!email)   { errEl.textContent = 'Please enter your email.';   errEl.style.display = 'block'; return; }
+  if (!message) { errEl.textContent = 'Please enter your message.'; errEl.style.display = 'block'; return; }
+
+  btn.innerHTML = '<span class="spinner"></span> Sending...'; btn.disabled = true;
+  try {
+    await fetch('/api/contact', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ name, email, phone, subject, message }),
+    }).then(async r => {
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Failed to send.');
+      return d;
+    });
+    // Clear form
+    document.getElementById('contactName').value    = '';
+    document.getElementById('contactEmail').value   = '';
+    document.getElementById('contactPhone').value   = '';
+    document.getElementById('contactMessage').value = '';
+    showToast('✓ Message sent! Ramki will respond within 24 hours.', 'success');
+  } catch(e) {
+    errEl.textContent = e.message;
+    errEl.style.display = 'block';
+  }
+  btn.innerHTML = 'Send Message →'; btn.disabled = false;
+}
+
+function trackPageView() {
+  fetch('/api/analytics/pageview', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' }).catch(()=>{});
+}
+
+// ═════════════════════════════════════════════════
+//  TOAST
+// ═════════════════════════════════════════════════
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3400);
+}
+
+// ═════════════════════════════════════════════════
+//  INIT
+// ═════════════════════════════════════════════════
+// Check if a valid session cookie exists before first render
+checkSession().then(() => {
+  loadHomeBlogs();
+  loadHeroPhoto();
+});
+trackPageView();
+</script>
+</body>
+</html>
