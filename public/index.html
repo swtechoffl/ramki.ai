@@ -578,7 +578,7 @@ Your content...
   </ul>
   <div class="nav-right">
     <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-    <button class="nav-login-btn" id="navLoginBtn" onclick="showPage('login')">Login</button>
+    <button class="nav-login-btn" id="navLoginBtn" style="display:none" onclick="showPage('dashboard')">Dashboard</button>
     <a class="nav-cta" onclick="goHome('contact')" style="cursor:pointer">Get Research →</a>
   </div>
 </nav>
@@ -919,20 +919,6 @@ Your content...
   </div>
 </div>
 
-<!-- ═══════════════ LOGIN PAGE ═══════════════ -->
-<div class="page" id="page-login">
-  <div class="login-page">
-    <div class="login-box">
-      <div class="login-logo">RAMKI</div>
-      <div class="login-sub">Admin Dashboard Login</div>
-      <div class="err-box" id="loginErr">Invalid username or password</div>
-      <div class="fg"><label>Username</label><input type="text" id="loginUser" placeholder="Enter username" onkeypress="if(event.key==='Enter')doLogin()"></div>
-      <div class="fg"><label>Password</label><input type="password" id="loginPass" placeholder="Enter password" onkeypress="if(event.key==='Enter')doLogin()"></div>
-      <button class="btn-submit" id="loginBtn" onclick="doLogin()">Sign In →</button>
-      <div style="text-align:center;margin-top:16px"><button onclick="showPage('home')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;font-family:inherit">← Back to Website</button></div>
-    </div>
-  </div>
-</div>
 
 <!-- ═══════════════ DASHBOARD PAGE ═══════════════ -->
 <div class="page" id="page-dashboard">
@@ -1108,7 +1094,7 @@ async function api(method, url, body, isFormData) {
   if (res.status === 401) {
     isAuthed = false; currentUser = ''; sessionStorage.removeItem('ramki_user');
     updateNavLogin();
-    if (url !== '/api/login' && url !== '/api/me') showToast('Session expired. Please log in again.','info');
+    if (url !== '/api/login' && url !== '/api/me') { showToast('Session expired. Please log in again.','info'); setTimeout(()=>window.location.href='/login',1500); }
   }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || 'Request failed');
@@ -1149,7 +1135,7 @@ function showPage(name) {
   const el = document.getElementById('page-' + name);
   if (el) { el.classList.add('active'); window.scrollTo(0,0); }
   if (name === 'blog-list')  loadBlogList();
-  if (name === 'dashboard')  { if(!isAuthed){showPage('login');return;} loadDashboard(); }
+  if (name === 'dashboard')  { if(!isAuthed){window.location.href='/login';return;} loadDashboard(); }
   if (name === 'home')       { loadHomeBlogs(); loadHeroPhoto(); }
   updateNavLogin();
 }
@@ -1159,34 +1145,12 @@ function goHome(id) {
 }
 function updateNavLogin() {
   const btn = document.getElementById('navLoginBtn');
-  if (isAuthed) { btn.textContent = 'Dashboard'; btn.onclick = () => showPage('dashboard'); }
-  else           { btn.textContent = 'Login';     btn.onclick = () => showPage('login'); }
+  btn.style.display = isAuthed ? '' : 'none';
 }
 
 // ═════════════════════════════════════════════════
 //  AUTH
 // ═════════════════════════════════════════════════
-async function doLogin() {
-  const u = document.getElementById('loginUser').value.trim();
-  const p = document.getElementById('loginPass').value;
-  const btn = document.getElementById('loginBtn');
-  btn.innerHTML = '<span class="spinner"></span> Signing in...';
-  btn.disabled = true;
-  document.getElementById('loginErr').classList.remove('show');
-  try {
-    const data = await api('POST', '/api/login', { username: u, password: p });
-    // Cookie is set by server (HttpOnly) — we only store display name
-    isAuthed = true; currentUser = data.user.username;
-    sessionStorage.setItem('ramki_user', currentUser);
-    showPage('dashboard');
-    document.getElementById('loginUser').value = '';
-    document.getElementById('loginPass').value = '';
-  } catch (e) {
-    document.getElementById('loginErr').textContent = e.message;
-    document.getElementById('loginErr').classList.add('show');
-  }
-  btn.innerHTML = 'Sign In →'; btn.disabled = false;
-}
 async function doLogout() {
   try { await api('POST', '/api/logout'); } catch {}
   isAuthed = false; currentUser = '';
@@ -1217,7 +1181,7 @@ async function changePassword() {
     document.getElementById('confPass').value = '';
     showToast('Password changed! Please log in again.','success');
     // Server revoked the token — redirect to login after 2s
-    setTimeout(() => { isAuthed=false; currentUser=''; sessionStorage.removeItem('ramki_user'); showPage('login'); updateNavLogin(); }, 2200);
+    setTimeout(() => { isAuthed=false; currentUser=''; sessionStorage.removeItem('ramki_user'); window.location.href='/login'; }, 2200);
   } catch(e) { errEl.textContent = e.message; errEl.classList.add('show'); }
 }
 
@@ -1818,6 +1782,10 @@ function showToast(msg, type = 'success') {
 checkSession().then(() => {
   loadHomeBlogs();
   loadHeroPhoto();
+  if (new URLSearchParams(location.search).get('admin') === '1' && isAuthed) {
+    history.replaceState(null, '', '/');
+    showPage('dashboard');
+  }
 });
 trackPageView();
 </script>

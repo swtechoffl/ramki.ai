@@ -763,6 +763,109 @@ app.put('/api/settings', auth, async (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════
+//  LOGIN PAGE
+// ═══════════════════════════════════════════════════════════
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+// ═══════════════════════════════════════════════════════════
+//  FORGOT / RESET PASSWORD
+// ═══════════════════════════════════════════════════════════
+const forgotLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, max: 5,
+  message: { error: 'Too many requests. Please try again in an hour.' },
+});
+
+app.post('/api/forgot-password', forgotLimiter, async (req, res) => {
+  const { username } = req.body;
+  // Always respond success to prevent username enumeration
+  res.json({ success: true });
+
+  if (!username || typeof username !== 'string' || username.length > 64) return;
+
+  try {
+    const { data: user } = await supabase
+      .from('users').select('id, username').eq('username', username.trim().toLowerCase()).maybeSingle();
+    if (!user) return;
+
+    // Delete any existing tokens for this user
+    await supabase.from('password_reset_tokens').delete().eq('username', user.username);
+
+    const token     = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
+    await supabase.from('password_reset_tokens').insert({ username: user.username, token, expires_at: expiresAt });
+
+    const transporter = createTransporter();
+    if (!transporter) { console.warn('[FORGOT-PW] SMTP not configured.'); return; }
+
+    const resetUrl = `${req.protocol}://${req.get('host')}/login?token=${token}`;
+    await transporter.sendMail({
+      from   : `"RAMKI Admin" <${process.env.SMTP_USER}>`,
+      to     : process.env.SMTP_USER,
+      subject: '[RAMKI] Password Reset Request',
+      html   : `
+        <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;padding:32px;background:#f8f8f8;border-radius:12px">
+          <h2 style="color:#6C63FF;margin-bottom:8px">Password Reset</h2>
+          <p style="color:#444">A password reset was requested for the <strong>${user.username}</strong> admin account.</p>
+          <p style="margin:24px 0">
+            <a href="${resetUrl}" style="background:linear-gradient(135deg,#6C63FF,#00D4FF);color:#fff;padding:14px 28px;border-radius:50px;text-decoration:none;font-weight:700;display:inline-block">
+              Reset Password
+            </a>
+          </p>
+          <p style="color:#888;font-size:12px">This link expires in <strong>1 hour</strong>. If you didn't request this, ignore this email.</p>
+          <p style="color:#bbb;font-size:11px;margin-top:16px">Or copy this link: ${resetUrl}</p>
+        </div>`,
+    });
+  } catch (e) {
+    console.error('[FORGOT-PW] Error:', e.message);
+  }
+});
+
+app.post('/api/reset-password', async (req, res) => {
+  const { token, password } = req.body;
+  if (!token || !password || typeof token !== 'string' || typeof password !== 'string') {
+    return res.status(400).json({ error: 'Invalid request.' });
+  }
+  if (password.length < 8 || password.length > 128) {
+    return res.status(400).json({ error: 'Password must be 8–128 characters.' });
+  }
+  if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+    return res.status(400).json({ error: 'Password must contain at least one letter and one number.' });
+  }
+
+  try {
+    const { data: record } = await supabase
+      .from('password_reset_tokens').select('*').eq('token', token).maybeSingle();
+
+    if (!record) return res.status(400).json({ error: 'Invalid or expired reset link.' });
+    if (new Date(record.expires_at) < new Date()) {
+      await supabase.from('password_reset_tokens').delete().eq('token', token);
+      return res.status(400).json({ error: 'Reset link has expired. Please request a new one.' });
+    }
+
+    await supabase.from('users').update({
+      password  : bcrypt.hashSync(password, 12),
+      updated_at: new Date().toISOString(),
+    }).eq('username', record.username);
+
+    await supabase.from('password_reset_tokens').delete().eq('token', token);
+
+    // Revoke all existing sessions for this user
+    const { data: user } = await supabase.from('users').select('id').eq('username', record.username).maybeSingle();
+    if (user) {
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3600000).toISOString();
+      await supabase.from('revoked_tokens').insert({ jti: `pwreset-${user.id}-${Date.now()}`, expires_at: expiresAt }).catch(() => {});
+    }
+
+    res.json({ success: true });
+  } catch (e) {
+    console.error('[RESET-PW] Error:', e.message);
+    res.status(500).json({ error: 'Failed to reset password. Please try again.' });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
 //  ERROR HANDLERS
 // ═══════════════════════════════════════════════════════════
 app.use((err, req, res, next) => {

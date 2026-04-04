@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — RAMKI Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#6C63FF;--accent2:#00D4FF;--accent3:#FF6B6B;--radius:16px}
+[data-theme="dark"]{--bg:#0A0F1E;--bg2:#0D1635;--text:#FFF;--text2:rgba(255,255,255,.72);--text3:rgba(255,255,255,.42);--border:rgba(255,255,255,.08);--card:rgba(255,255,255,.04)}
+[data-theme="light"]{--bg:#F5F5F0;--bg2:#EAEAE4;--text:#0A0F1E;--text2:rgba(10,15,30,.72);--text3:rgba(10,15,30,.45);--border:rgba(10,15,30,.1);--card:rgba(255,255,255,.85)}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;position:relative;overflow:hidden}
+
+/* blobs */
+.blob{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+[data-theme="dark"] .blob{opacity:.12}
+[data-theme="light"] .blob{opacity:.07}
+.blob1{width:500px;height:500px;background:var(--accent);top:-150px;left:-150px}
+.blob2{width:400px;height:400px;background:var(--accent2);bottom:-100px;right:-100px}
+
+/* card */
+.login-card{position:relative;z-index:1;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:48px 44px;width:100%;max-width:440px;backdrop-filter:blur(24px)}
+.logo{font-size:30px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:4px;letter-spacing:-1px}
+.logo-sub{text-align:center;font-size:12px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:36px}
+
+/* views */
+.view{display:none}.view.active{display:block}
+
+/* form elements */
+.fg{margin-bottom:18px}
+.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.fg input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--text);font-family:inherit;outline:none;transition:border-color .2s}
+.fg input:focus{border-color:var(--accent)}
+.fg input::placeholder{color:var(--text3)}
+.btn-primary{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:14px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:hover{opacity:.88}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+
+/* error / success */
+.err-box{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.25);color:rgba(255,107,107,.9);border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:16px;display:none}
+.err-box.show{display:block}
+.ok-box{background:rgba(0,229,195,.08);border:1px solid rgba(0,229,195,.25);color:#00E5C3;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:16px;display:none}
+.ok-box.show{display:block}
+
+/* links */
+.link-row{text-align:center;margin-top:20px;font-size:13px;color:var(--text3)}
+.link-btn{background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;font-family:inherit;padding:0;text-decoration:underline;text-underline-offset:3px}
+.back-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-top:14px;display:block;width:100%;text-align:center;transition:color .2s}
+.back-btn:hover{color:var(--text)}
+
+/* view title */
+.view-title{font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px}
+.view-desc{font-size:13px;color:var(--text3);margin-bottom:28px;line-height:1.6}
+
+/* spinner */
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* theme toggle */
+.theme-btn{position:fixed;top:20px;right:20px;z-index:10;background:var(--card);border:1px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.theme-btn:hover{border-color:var(--accent)}
+
+/* back to site */
+.site-link{position:fixed;top:20px;left:20px;z-index:10;font-size:12px;color:var(--text3);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.site-link:hover{color:var(--text)}
+
+@media(max-width:480px){.login-card{padding:36px 24px}}
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<a class="site-link" href="/">← Back to Website</a>
+<button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+
+<div class="login-card">
+  <div class="logo">RAMKI</div>
+  <div class="logo-sub">Admin Access</div>
+
+  <!-- ── LOGIN VIEW ── -->
+  <div class="view active" id="view-login">
+    <div class="err-box" id="loginErr"></div>
+    <div class="fg">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="Enter username" autocomplete="username"
+             onkeypress="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password"
+             onkeypress="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-primary" id="loginBtn" onclick="doLogin()">Sign In →</button>
+    <div class="link-row">
+      <button class="link-btn" onclick="showView('forgot')">Forgot password?</button>
+    </div>
+  </div>
+
+  <!-- ── FORGOT PASSWORD VIEW ── -->
+  <div class="view" id="view-forgot">
+    <div class="view-title">Forgot Password</div>
+    <div class="view-desc">Enter your admin username and we'll send a reset link to the configured admin email.</div>
+    <div class="err-box" id="forgotErr"></div>
+    <div class="ok-box" id="forgotOk"></div>
+    <div class="fg">
+      <label>Username</label>
+      <input type="text" id="forgotUser" placeholder="Enter username" autocomplete="username"
+             onkeypress="if(event.key==='Enter')doForgot()">
+    </div>
+    <button class="btn-primary" id="forgotBtn" onclick="doForgot()">Send Reset Link →</button>
+    <button class="back-btn" onclick="showView('login')">← Back to Login</button>
+  </div>
+
+  <!-- ── RESET PASSWORD VIEW ── -->
+  <div class="view" id="view-reset">
+    <div class="view-title">Reset Password</div>
+    <div class="view-desc">Choose a new password for your admin account.</div>
+    <div class="err-box" id="resetErr"></div>
+    <div class="ok-box" id="resetOk"></div>
+    <div class="fg">
+      <label>New Password</label>
+      <input type="password" id="resetPass" placeholder="Min. 8 characters"
+             onkeypress="if(event.key==='Enter')doReset()">
+    </div>
+    <div class="fg">
+      <label>Confirm Password</label>
+      <input type="password" id="resetConf" placeholder="Repeat new password"
+             onkeypress="if(event.key==='Enter')doReset()">
+    </div>
+    <button class="btn-primary" id="resetBtn" onclick="doReset()">Set New Password →</button>
+    <button class="back-btn" onclick="showView('login')">← Back to Login</button>
+  </div>
+</div>
+
+<script>
+// ── Theme ──
+let theme = localStorage.getItem('ramki_theme') || 'dark';
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeBtn').textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('ramki_theme', theme);
+  applyTheme();
+}
+applyTheme();
+
+// ── Views ──
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  // clear errors
+  document.querySelectorAll('.err-box,.ok-box').forEach(el => { el.textContent=''; el.classList.remove('show'); });
+}
+
+// ── Check token in URL ──
+const urlToken = new URLSearchParams(location.search).get('token');
+if (urlToken) showView('reset');
+
+// ── API helper ──
+async function api(method, url, body) {
+  const res = await fetch(url, {
+    method,
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+// ── Login ──
+async function doLogin() {
+  const u   = document.getElementById('loginUser').value.trim();
+  const p   = document.getElementById('loginPass').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginErr');
+  err.classList.remove('show');
+  if (!u || !p) { err.textContent = 'Please enter username and password.'; err.classList.add('show'); return; }
+  btn.innerHTML = '<span class="spinner"></span> Signing in...'; btn.disabled = true;
+  try {
+    await api('POST', '/api/login', { username: u, password: p });
+    window.location.href = '/?admin=1';
+  } catch (e) {
+    err.textContent = e.message; err.classList.add('show');
+    btn.innerHTML = 'Sign In →'; btn.disabled = false;
+  }
+}
+
+// ── Forgot Password ──
+async function doForgot() {
+  const u   = document.getElementById('forgotUser').value.trim();
+  const btn = document.getElementById('forgotBtn');
+  const err = document.getElementById('forgotErr');
+  const ok  = document.getElementById('forgotOk');
+  err.classList.remove('show'); ok.classList.remove('show');
+  if (!u) { err.textContent = 'Please enter your username.'; err.classList.add('show'); return; }
+  btn.innerHTML = '<span class="spinner"></span> Sending...'; btn.disabled = true;
+  try {
+    await api('POST', '/api/forgot-password', { username: u });
+    ok.textContent = 'If that username exists, a reset link has been sent to the admin email. Check your inbox.';
+    ok.classList.add('show');
+    document.getElementById('forgotUser').value = '';
+  } catch (e) {
+    err.textContent = e.message; err.classList.add('show');
+  }
+  btn.innerHTML = 'Send Reset Link →'; btn.disabled = false;
+}
+
+// ── Reset Password ──
+async function doReset() {
+  const np  = document.getElementById('resetPass').value;
+  const cf  = document.getElementById('resetConf').value;
+  const btn = document.getElementById('resetBtn');
+  const err = document.getElementById('resetErr');
+  const ok  = document.getElementById('resetOk');
+  err.classList.remove('show'); ok.classList.remove('show');
+  if (!np || !cf)   { err.textContent = 'Please fill in both fields.'; err.classList.add('show'); return; }
+  if (np !== cf)    { err.textContent = 'Passwords do not match.'; err.classList.add('show'); return; }
+  if (np.length < 8){ err.textContent = 'Password must be at least 8 characters.'; err.classList.add('show'); return; }
+  if (!/[a-zA-Z]/.test(np) || !/[0-9]/.test(np)) {
+    err.textContent = 'Password must contain at least one letter and one number.';
+    err.classList.add('show'); return;
+  }
+  btn.innerHTML = '<span class="spinner"></span> Saving...'; btn.disabled = true;
+  try {
+    await api('POST', '/api/reset-password', { token: urlToken, password: np });
+    ok.textContent = 'Password reset successfully! Redirecting to login...';
+    ok.classList.add('show');
+    document.getElementById('resetPass').value = '';
+    document.getElementById('resetConf').value = '';
+    setTimeout(() => window.location.href = '/login', 2000);
+  } catch (e) {
+    err.textContent = e.message; err.classList.add('show');
+    btn.innerHTML = 'Set New Password →'; btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

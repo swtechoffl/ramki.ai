@@ -47,6 +47,18 @@ create table if not exists settings (
   value jsonb default '{}'
 );
 
+-- Password reset tokens (1-hour expiry, deleted after use)
+create table if not exists password_reset_tokens (
+  id         uuid primary key default gen_random_uuid(),
+  username   text not null,
+  token      text unique not null,
+  expires_at timestamptz not null,
+  created_at timestamptz default now()
+);
+create index if not exists prt_token_idx    on password_reset_tokens(token);
+create index if not exists prt_expires_idx  on password_reset_tokens(expires_at);
+alter table password_reset_tokens disable row level security;
+
 -- Revoked JWT tokens (for logout / password change)
 create table if not exists revoked_tokens (
   id         uuid primary key default gen_random_uuid(),
